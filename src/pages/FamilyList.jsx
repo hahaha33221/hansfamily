@@ -36,7 +36,11 @@ export default function FamilyList() {
     if (!matchesSearch) return false;
 
     if (activeTab === 'all') return true;
-    return member.category === activeTab;
+    if (activeTab === 'direct') return member.category === 'generation2' || member.category === 'generation3';
+    if (activeTab === 'spouse') return member.category === 'spouse';
+    if (activeTab === 'child') return member.category === 'generation4';
+    if (activeTab === 'single') return (member.category === 'generation2' || member.category === 'generation3') && !member.spouseId;
+    return true;
   });
 
   return (

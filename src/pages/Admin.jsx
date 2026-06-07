@@ -16,7 +16,7 @@ export default function Admin() {
   const [name, setName] = useState('');
   const [gender, setGender] = useState('male');
   const [birthYear, setBirthYear] = useState('');
-  const [category, setCategory] = useState('direct');
+  const [category, setCategory] = useState('generation3');
   const [spouseId, setSpouseId] = useState('');
   const [parentIds, setParentIds] = useState([]);
   const [childIds, setChildIds] = useState([]);
@@ -55,7 +55,7 @@ export default function Admin() {
     setName('');
     setGender('male');
     setBirthYear('');
-    setCategory('direct');
+    setCategory('generation3');
     setSpouseId('');
     setParentIds([]);
     setChildIds([]);
@@ -93,7 +93,7 @@ export default function Admin() {
       spouseId: spouseId || null,
       parentIds: parentIds,
       childIds: childIds,
-      groupId: editingMember ? editingMember.groupId : (category === 'single' ? 'single' : 'g_new'),
+      groupId: editingMember ? editingMember.groupId : 'g_new',
       note: note.trim() || null,
     };
 
@@ -281,7 +281,7 @@ export default function Admin() {
                   <td className="p-4 text-text-sub">{m.gender === 'male' ? '남성' : m.gender === 'female' ? '여성' : '미확정'}</td>
                   <td className="p-4 text-text-sub">{m.birthYear ? `${m.birthYear}년생` : '-'}</td>
                   <td className="p-4 text-text-sub">
-                    {m.category === 'direct' ? '직계 사촌' : m.category === 'spouse' ? '배우자' : m.category === 'child' ? '자녀' : '미혼'}
+                    {m.category === 'generation2' ? '2세대 직계' : m.category === 'generation3' ? '3세대 사촌' : m.category === 'generation4' ? '4세대 자녀' : '배우자'}
                   </td>
                   <td className="p-4 text-text-sub">{getSpouseName(m.spouseId)}</td>
                   <td className="p-4">
@@ -316,7 +316,7 @@ export default function Admin() {
                 <div className="flex items-center space-x-1.5">
                   <span className="font-bold text-text-main">{m.name}</span>
                   <span className="text-[10px] bg-secondary/50 text-accent px-2 py-0.5 rounded-full font-semibold">
-                    {m.category === 'direct' ? '직계' : m.category === 'spouse' ? '배우자' : m.category === 'child' ? '자녀' : '미혼'}
+                    {m.category === 'generation2' ? '2세대' : m.category === 'generation3' ? '3세대' : m.category === 'generation4' ? '4세대' : '배우자'}
                   </span>
                 </div>
                 <div className="text-xs text-text-sub font-medium">
@@ -403,10 +403,10 @@ export default function Admin() {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full bg-background border border-border-beige rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main"
                 >
-                  <option value="direct">직계 사촌</option>
+                  <option value="generation2">2세대 직계</option>
+                  <option value="generation3">3세대 사촌</option>
+                  <option value="generation4">4세대 자녀</option>
                   <option value="spouse">배우자</option>
-                  <option value="child">자녀 세대</option>
-                  <option value="single">미혼 사촌</option>
                 </select>
               </div>
 
@@ -421,7 +421,7 @@ export default function Admin() {
                   >
                     <option value="">배우자 없음</option>
                     {members
-                      .filter((m) => m.id !== (editingMember ? editingMember.id : '') && m.category !== 'child')
+                      .filter((m) => m.id !== (editingMember ? editingMember.id : '') && m.category !== 'generation4')
                       .map((m) => (
                         <option key={m.id} value={m.id}>{m.name}</option>
                       ))}
@@ -430,7 +430,7 @@ export default function Admin() {
               )}
 
               {/* Parents linkages for children */}
-              {category === 'child' && (
+              {category === 'generation4' && (
                 <div>
                   <label className="block text-xs font-semibold text-text-sub uppercase mb-1">부모 연결 (다중선택)</label>
                   <select
@@ -440,7 +440,7 @@ export default function Admin() {
                     className="w-full bg-background border border-border-beige rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main h-24"
                   >
                     {members
-                      .filter((m) => m.category !== 'child')
+                      .filter((m) => m.category !== 'generation4')
                       .sort((a, b) => a.name.localeCompare(b.name, 'ko'))
                       .map((m) => (
                         <option key={m.id} value={m.id}>{m.name}</option>

@@ -13,7 +13,12 @@ export function getStoredMembers() {
     return initialMembers;
   }
   try {
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    if (parsed.length === 27 || parsed.some(m => m.category === 'direct' || m.category === 'child')) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(initialMembers));
+      return initialMembers;
+    }
+    return parsed;
   } catch (e) {
     console.error("Failed to parse stored members:", e);
     return initialMembers;
