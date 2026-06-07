@@ -50,7 +50,7 @@ export default function Home() {
               onClick={() => navigate('/orgchart')}
               className="flex items-center justify-center space-x-2 bg-accent text-white font-medium px-6 py-3.5 rounded-2xl shadow-md hover:bg-accent/95 transition-all duration-300 hover:shadow-lg"
             >
-              <span>🏢 가족 조직도</span>
+              <span>가족 조직도</span>
             </button>
             <button
               onClick={() => navigate('/family')}
