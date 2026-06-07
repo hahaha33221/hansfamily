@@ -38,17 +38,23 @@ export default function Home() {
           <p className="text-lg text-text-sub max-w-2xl mx-auto lg:mx-0 font-sans">
             사촌, 이종사촌 등 복잡한 가족 관계 속에서 서로의 정식 호칭을 쉽고 빠르게 확인해보세요. 27명의 따뜻한 우리 가족 안내소입니다.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+          <div className="flex flex-col sm:flex-wrap sm:flex-row gap-3 justify-center lg:justify-start pt-2">
             <button
               onClick={() => navigate('/search')}
-              className="flex items-center justify-center space-x-2 bg-primary text-white font-medium px-8 py-4 rounded-2xl shadow-lg hover:bg-primary/95 transition-all duration-300 hover:shadow-xl group"
+              className="flex items-center justify-center space-x-2 bg-primary text-white font-medium px-6 py-3.5 rounded-2xl shadow-lg hover:bg-primary/95 transition-all duration-300 hover:shadow-xl group"
             >
               <span>상세 호칭 찾기</span>
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <button
+              onClick={() => navigate('/orgchart')}
+              className="flex items-center justify-center space-x-2 bg-accent text-white font-medium px-6 py-3.5 rounded-2xl shadow-md hover:bg-accent/95 transition-all duration-300 hover:shadow-lg"
+            >
+              <span>🏢 가족 조직도</span>
+            </button>
+            <button
               onClick={() => navigate('/family')}
-              className="flex items-center justify-center space-x-2 border-2 border-primary/20 text-text-main font-medium px-8 py-4 rounded-2xl hover:bg-secondary/20 transition-all duration-300"
+              className="flex items-center justify-center space-x-2 border-2 border-primary/20 text-text-main font-medium px-6 py-3.5 rounded-2xl hover:bg-secondary/20 transition-all duration-300"
             >
               <span>우리 가족 전체보기</span>
             </button>

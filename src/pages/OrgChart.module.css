@@ -1,0 +1,23 @@
+.initialDirect {
+  background-color: #D4845A;
+  color: #FFFFFF;
+}
+
+.initialSpouse {
+  background-color: #8B5A3C;
+  color: #FFFFFF;
+}
+
+.initialChild {
+  background-color: #F5E6D3;
+  color: #D4845A;
+}
+
+.initialSingle {
+  background-color: #F5E6D3;
+  color: #8B5A3C;
+}
+
+.resultPanel {
+  transition: all 0.3s ease-in-out;
+}

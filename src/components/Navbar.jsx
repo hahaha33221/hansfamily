@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Users, Search, BookOpen, Settings, Menu, X } from 'lucide-react';
+import { Home, Users, Search, BookOpen, Settings, Menu, X, Network } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +26,7 @@ export default function Navbar() {
 
   const navItems = [
     { name: '우리 가족', path: '/family', icon: <Users size={18} /> },
+    { name: '가족 조직도', path: '/orgchart', icon: <Network size={18} /> },
     { name: '호칭 찾기', path: '/search', icon: <Search size={18} /> },
     { name: '호칭 가이드', path: '/guide', icon: <BookOpen size={18} /> },
     { name: '관리자', path: '/admin', icon: <Settings size={18} /> },

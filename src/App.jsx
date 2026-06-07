@@ -6,6 +6,7 @@ import FamilyList from './pages/FamilyList';
 import FamilyDetail from './pages/FamilyDetail';
 import HonorificsSearch from './pages/HonorificsSearch';
 import HonorificsGuide from './pages/HonorificsGuide';
+import OrgChart from './pages/OrgChart';
 import Admin from './pages/Admin';
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/family/:id" element={<FamilyDetail />} />
             <Route path="/search" element={<HonorificsSearch />} />
             <Route path="/guide" element={<HonorificsGuide />} />
+            <Route path="/orgchart" element={<OrgChart />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<Home />} />
           </Routes>

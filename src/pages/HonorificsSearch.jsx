@@ -1,14 +1,31 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { ArrowRight, RotateCcw, Share2, Sparkles, Check, ChevronRight } from 'lucide-react';
 import { getStoredMembers } from '../utils/memberStorage';
 import { getHonorific } from '../utils/getHonorific';
 
 export default function HonorificsSearch() {
   const membersData = useMemo(() => getStoredMembers(), []);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [step, setStep] = useState(1);
   const [me, setMe] = useState(null);
   const [other, setOther] = useState(null);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const fromId = searchParams.get('from');
+    const targetId = searchParams.get('target');
+    if (fromId && targetId) {
+      const fromMember = membersData.find((m) => m.id === fromId);
+      const targetMember = membersData.find((m) => m.id === targetId);
+      if (fromMember && targetMember) {
+        setMe(fromMember);
+        setOther(targetMember);
+        setStep(3);
+      }
+    }
+  }, [searchParams, membersData]);
+
 
 
   const handleSelectMe = (member) => {
