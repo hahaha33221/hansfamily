@@ -17,14 +17,14 @@ export default function FamilyList() {
 
   const getCategoryLabel = (member) => {
     switch (member.category) {
-      case 'direct':
-        return '직계 사촌';
+      case 'generation2':
+        return '직계 형제자매';
+      case 'generation3':
+        return '사촌';
+      case 'generation4':
+        return '자녀 세대';
       case 'spouse':
         return member.note || '배우자';
-      case 'child':
-        return '자녀 세대';
-      case 'single':
-        return '미혼 사촌';
       default:
         return '가족';
     }
@@ -39,7 +39,6 @@ export default function FamilyList() {
     if (activeTab === 'direct') return member.category === 'generation2' || member.category === 'generation3';
     if (activeTab === 'spouse') return member.category === 'spouse';
     if (activeTab === 'child') return member.category === 'generation4';
-    if (activeTab === 'single') return (member.category === 'generation2' || member.category === 'generation3') && !member.spouseId;
     return true;
   });
 
@@ -48,7 +47,7 @@ export default function FamilyList() {
       {/* Title & Introduction */}
       <div className="text-center mb-10 space-y-2">
         <h1 className="text-3xl sm:text-4xl font-serif text-text-main font-bold">우리 가족</h1>
-        <p className="text-text-sub">함께하는 27명의 가족 구성원 목록입니다.</p>
+        <p className="text-text-sub">함께하는 {membersData.length}명의 가족 구성원 목록입니다.</p>
       </div>
 
       {/* Filters and Search Bar Container */}
@@ -60,7 +59,6 @@ export default function FamilyList() {
             { id: 'direct', label: '직계' },
             { id: 'spouse', label: '배우자' },
             { id: 'child', label: '자녀' },
-            { id: 'single', label: '미혼' },
           ].map((tab) => (
             <button
               key={tab.id}

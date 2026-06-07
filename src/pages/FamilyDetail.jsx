@@ -42,7 +42,7 @@ export default function FamilyDetail() {
   const getCategoryLabel = (m) => {
     switch (m.category) {
       case 'generation2': return '직계 형제자매 (2세대)';
-      case 'generation3': return m.spouseId ? '사촌 (3세대)' : '미혼 사촌 (3세대)';
+      case 'generation3': return '사촌 (3세대)';
       case 'generation4': return '자녀 세대 (4세대)';
       case 'spouse': return m.note || '배우자';
       default: return '가족';
@@ -119,7 +119,7 @@ export default function FamilyDetail() {
                 {spouse.name} ({spouse.note || '배우자'})
               </Link>
             ) : (
-              <p className="text-xs text-text-sub font-medium italic">미혼 또는 배우자 정보가 없습니다.</p>
+              <p className="text-xs text-text-sub font-medium italic">배우자 정보가 없습니다.</p>
             )}
           </div>
 

@@ -18,6 +18,27 @@ export function getStoredMembers() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(initialMembers));
       return initialMembers;
     }
+
+    // Clean up '미혼' from notes in local storage if present
+    let modified = false;
+    const cleaned = parsed.map(m => {
+      if (m.note && m.note.includes('미혼')) {
+        modified = true;
+        let newNote = m.note
+          .replace(/미혼\s*·\s*/g, '')
+          .replace(/\s*·\s*미혼/g, '')
+          .replace(/미혼/g, '')
+          .trim();
+        return { ...m, note: newNote };
+      }
+      return m;
+    });
+
+    if (modified) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
+      return cleaned;
+    }
+
     return parsed;
   } catch (e) {
     console.error("Failed to parse stored members:", e);
