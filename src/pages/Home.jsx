@@ -7,8 +7,15 @@ import { getHonorific } from '../utils/getHonorific';
 export default function Home() {
   const navigate = useNavigate();
   const membersData = useMemo(() => getStoredMembers(), []);
-  const [meId, setMeId] = useState('');
+  
+  const stats = useMemo(() => {
+    const total = membersData.length;
+    const cousins = membersData.filter(m => m.category === 'generation3').length;
+    const children = membersData.filter(m => m.category === 'generation4').length;
+    return { total, cousins, children };
+  }, [membersData]);
 
+  const [meId, setMeId] = useState('');
   const [otherId, setOtherId] = useState('');
   const [result, setResult] = useState(null);
 
@@ -149,7 +156,7 @@ export default function Home() {
               <Users size={28} />
             </div>
             <p className="text-text-sub text-sm font-medium">총 가족 구성원</p>
-            <p className="text-3xl font-bold text-text-main mt-1 font-serif">27<span className="text-lg">명</span></p>
+            <p className="text-3xl font-bold text-text-main mt-1 font-serif">{stats.total}<span className="text-lg">명</span></p>
           </div>
 
           <div className="bg-white border border-border-beige rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
@@ -157,23 +164,23 @@ export default function Home() {
               <Award size={28} />
             </div>
             <p className="text-text-sub text-sm font-medium">가족 그룹</p>
-            <p className="text-3xl font-bold text-text-main mt-1 font-serif">8<span className="text-lg">가족</span> <span className="text-sm font-normal text-text-sub">+ 미혼 4명</span></p>
+            <p className="text-3xl font-bold text-text-main mt-1 font-serif">7<span className="text-lg">가족</span></p>
           </div>
 
           <div className="bg-white border border-border-beige rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
             <div className="flex justify-center text-primary mb-3">
               <ShieldAlert size={28} />
             </div>
-            <p className="text-text-sub text-sm font-medium">직계 사촌</p>
-            <p className="text-3xl font-bold text-text-main mt-1 font-serif">8<span className="text-lg">명</span></p>
+            <p className="text-text-sub text-sm font-medium">3세대 사촌</p>
+            <p className="text-3xl font-bold text-text-main mt-1 font-serif">{stats.cousins}<span className="text-lg">명</span></p>
           </div>
 
           <div className="bg-white border border-border-beige rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
             <div className="flex justify-center text-primary mb-3">
               <Users size={28} />
             </div>
-            <p className="text-text-sub text-sm font-medium">자녀 세대</p>
-            <p className="text-3xl font-bold text-text-main mt-1 font-serif">7<span className="text-lg">명</span></p>
+            <p className="text-text-sub text-sm font-medium">4세대 자녀</p>
+            <p className="text-3xl font-bold text-text-main mt-1 font-serif">{stats.children}<span className="text-lg">명</span></p>
           </div>
         </div>
       </div>
