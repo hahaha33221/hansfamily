@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap');
+
+@import "tailwindcss";
+
+
+@theme {
+  --font-serif: "Noto Serif KR", serif;
+  --font-sans: "Noto Sans KR", sans-serif;
+  
+  --color-primary: #D4845A;
+  --color-secondary: #F5E6D3;
+  --color-accent: #8B5A3C;
+  --color-background: #FDFAF6;
+  --color-text-main: #2C1810;
+  --color-text-sub: #7A6055;
+  --color-border-beige: #E8D5C4;
+  --color-success: #6B8F6B;
+}
+
+body {
+  background-color: #FDFAF6;
+  color: #2C1810;
+  font-family: "Noto Sans KR", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Noto Serif KR", serif;
+}
