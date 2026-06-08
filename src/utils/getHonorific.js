@@ -137,7 +137,7 @@ function getInLawTerm(directMember, spouseMember, members) {
       // 손위 남자 사촌의 아내 ➜ 형수님 / 도련님·아가씨
       return {
         directCallsSpouse: directMember.gender === 'male' ? '형수님' : '새언니',
-        spouseCallsDirect: directMember.gender === 'male' ? '도련님 / 서방님' : '아가씨'
+        spouseCallsDirect: directMember.gender === 'male' ? '도련님' : '아가씨'
       };
     } else {
       // 손위 여자 사촌의 남편 ➜ 매형·형부 / 처남·처제
