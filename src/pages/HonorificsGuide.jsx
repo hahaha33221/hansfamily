@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ChevronDown, BookOpen, AlertCircle, HelpCircle } from 'lucide-react';
+import { getStoredMembers } from '../utils/memberStorage';
 
 export default function HonorificsGuide() {
   const [openFaq, setOpenFaq] = useState(null);
+  const members = useMemo(() => getStoredMembers(), []);
+  const currentYear = 2026;
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
+  };
+
+  const childrenList = useMemo(() => {
+    return members
+      .filter((m) => m.category === 'generation4')
+      .sort((a, b) => {
+        if (a.birthYear !== b.birthYear) {
+          return (a.birthYear || 0) - (b.birthYear || 0);
+        }
+        const idNumA = parseInt(a.id.replace('d', ''), 10);
+        const idNumB = parseInt(b.id.replace('d', ''), 10);
+        return idNumA - idNumB;
+      });
+  }, [members]);
+
+  const getRankTag = (idx, total) => {
+    if (idx === 0) return "첫째 (최연장)";
+    if (idx === total - 1) return "막내 (최연소)";
+    const ranks = ["첫째", "둘째", "셋째", "넷째", "다섯째", "여섯째", "일곱째", "여덟째", "아홉째", "열째", "열한째", "열두째"];
+    return `${ranks[idx]} 자녀`;
   };
 
   const faqs = [
@@ -120,33 +143,65 @@ export default function HonorificsGuide() {
         </div>
       </div>
 
+      {/* Grandparent & Great-Grandparent Terms Table */}
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold font-serif text-text-main">3. 조부모 및 증조부모 호칭 규칙</h2>
+        <p className="text-text-sub text-sm">가계 항렬에 따른 조부모 및 증조부모 세대를 부르는 호칭입니다.</p>
+
+        <div className="overflow-x-auto border border-border-beige rounded-2xl shadow-sm">
+          <table className="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr className="bg-primary text-white font-serif">
+                <th className="p-4 border-b border-border-beige">관계구분</th>
+                <th className="p-4 border-b border-border-beige">상대방이 남성인 경우</th>
+                <th className="p-4 border-b border-border-beige">상대방이 여성인 경우</th>
+                <th className="p-4 border-b border-border-beige">조부모가 나를 부를 때</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border-beige">
+              <tr className="bg-white hover:bg-secondary/10 transition-colors">
+                <td className="p-4 font-semibold text-text-main">2대 차이 직계 (조부모 ↔ 손자녀)</td>
+                <td className="p-4 text-text-sub">할아버지</td>
+                <td className="p-4 text-text-sub">할머니</td>
+                <td className="p-4 text-text-sub">이름 + 아/야 (성씨 제외)</td>
+              </tr>
+              <tr className="bg-secondary/15 hover:bg-secondary/20 transition-colors">
+                <td className="p-4 font-semibold text-text-main">3대 차이 직계 (증조부모 ↔ 증손자녀)</td>
+                <td className="p-4 text-text-sub">증조할아버지</td>
+                <td className="p-4 text-text-sub">증조할머니</td>
+                <td className="p-4 text-text-sub">이름 + 아/야 (성씨 제외)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Children Seniority Order */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold font-serif text-text-main">3. 자녀 세대 서열 및 생년</h2>
-        <p className="text-text-sub text-sm">자녀 세대 간에는 출생 연도 서열에 따라 형/누나/오빠/언니 호칭을 씁니다.</p>
+        <h2 className="text-2xl font-bold font-serif text-text-main">4. 자녀 세대 서열 및 생년</h2>
+        <p className="text-text-sub text-sm">자녀 세대 간에는 출생 연도 서열에 따라 형/누나/오빠/언니 호칭을 씁니다. ({childrenList.length}명 등록됨)</p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { name: '지윤', age: '14세', year: '2012년생', tag: '최연장 자녀' },
-            { name: '리원', age: '12세', year: '2014년생', tag: '둘째 자녀' },
-            { name: '지유', age: '8세', year: '2018년생', tag: '셋째 자녀' },
-            { name: '태완', age: '7세', year: '2019년생', tag: '넷째 자녀' },
-            { name: '승윤', age: '6세', year: '2020년생', tag: '다섯째 자녀' },
-            { name: '정윤', age: '6세', year: '2020년생', tag: '동갑내기 자녀' },
-            { name: '홍서아', age: '0세', year: '2026년생', tag: '막내 영아' },
-          ].map((child, idx) => (
-            <div key={idx} className="bg-white border border-border-beige rounded-2xl p-4 shadow-sm text-center">
-              <div className="text-xs font-semibold text-primary uppercase mb-1">{child.tag}</div>
-              <div className="text-lg font-bold text-text-main font-serif">{child.name}</div>
-              <div className="text-xs text-text-sub mt-1">{child.year} ({child.age})</div>
-            </div>
-          ))}
+          {childrenList.map((child, idx) => {
+            const age = child.birthYear ? currentYear - child.birthYear : 0;
+            return (
+              <div key={child.id} className="bg-white border border-border-beige rounded-2xl p-4 shadow-sm text-center hover:border-primary hover:-translate-y-0.5 transition-all duration-300">
+                <div className="text-xs font-semibold text-primary uppercase mb-1">
+                  {getRankTag(idx, childrenList.length)}
+                </div>
+                <div className="text-lg font-bold text-text-main font-serif">{child.name}</div>
+                <div className="text-xs text-text-sub mt-1">
+                  {child.birthYear}년생 ({age === 0 ? '영아' : `${age}세`}) · {child.gender === 'male' ? '남성' : '여성'}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Special Cases Info Cards */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold font-serif text-text-main">4. 특수 예외 상황 및 상식</h2>
+        <h2 className="text-2xl font-bold font-serif text-text-main">5. 특수 예외 상황 및 상식</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white border border-border-beige rounded-3xl p-6 shadow-sm space-y-3">
             <div className="flex items-center space-x-2 text-primary font-bold">
@@ -172,7 +227,7 @@ export default function HonorificsGuide() {
 
       {/* FAQ Accordion */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold font-serif text-text-main">5. 자주 묻는 질문 (FAQ)</h2>
+        <h2 className="text-2xl font-bold font-serif text-text-main">6. 자주 묻는 질문 (FAQ)</h2>
         <div className="space-y-3">
           {faqs.map((faq, index) => {
             const isOpen = openFaq === index;
