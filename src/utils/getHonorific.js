@@ -628,26 +628,35 @@ export function getHonorific(memberA, memberB, members) {
     }
   }
 
-  // 조부모 ↔ 손자녀 관계 (1세대 ↔ 3세대/4세대)
+  // 조부모 ↔ 손자녀 관계 (1세대 ↔ 3세대) 및 증조부모 ↔ 증손자녀 관계 (1세대 ↔ 4세대)
   if ((genA === 'generation1' && (genB === 'generation3' || genB === 'generation4')) || ((genA === 'generation3' || genA === 'generation4') && genB === 'generation1')) {
     const isAgrandparent = genA === 'generation1';
     const grandparent = isAgrandparent ? memberA : memberB;
     const grandchild = isAgrandparent ? memberB : memberA;
-    const grandTitle = grandparent.gender === 'male' ? '할아버지' : '할머니';
+    const isG4 = grandchild.category === 'generation4';
+    
+    const grandTitle = isG4 
+      ? (grandparent.gender === 'male' ? '증조할아버지' : '증조할머니')
+      : (grandparent.gender === 'male' ? '할아버지' : '할머니');
+      
+    const relationType = isG4 ? '증조부모 / 증손자녀' : '조부모 / 손자녀';
+    const noteText = isG4
+      ? `${grandparent.name}은(는) ${grandchild.name}의 증조부모입니다.`
+      : `${grandparent.name}은(는) ${grandchild.name}의 조부모입니다.`;
     
     if (isAgrandparent) {
       return {
         aCallsB: getVocative(grandchild.name),
         bCallsA: grandTitle,
-        relation: '조부모 / 손자녀',
-        note: `${grandparent.name}은(는) ${grandchild.name}의 조부모입니다.`
+        relation: relationType,
+        note: noteText
       };
     } else {
       return {
         aCallsB: grandTitle,
         bCallsA: getVocative(grandchild.name),
-        relation: '조부모 / 손자녀',
-        note: `${grandparent.name}은(는) ${grandchild.name}의 조부모입니다.`
+        relation: relationType,
+        note: noteText
       };
     }
   }

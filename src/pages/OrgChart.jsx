@@ -32,6 +32,9 @@ export default function OrgChart() {
 
   const findById = (id) => members.find((m) => m.id === id);
 
+  const gen1Grandfather = members.find((m) => m.id === 'gen1-1');
+  const gen1Grandmother = members.find((m) => m.id === 'gen1-2');
+
   const honorific = selected && compareId
     ? getHonorific(findById(compareId), findById(selected.id), members)
     : null;
@@ -119,9 +122,9 @@ export default function OrgChart() {
       {/* Legend */}
       <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-text-sub bg-white border border-border-beige rounded-2xl py-3 px-6 shadow-sm max-w-xl mx-auto font-sans">
         {[
-          { cls: styles.initialDirect, label: '직계 사촌' },
+          { cls: styles.initialDirect, label: '직계 구성원' },
           { cls: styles.initialSpouse, label: '배우자' },
-          { cls: styles.initialChild, label: '자녀' },
+          { cls: styles.initialChild, label: '자녀 세대' },
         ].map(({ cls, label }) => (
           <div key={label} className="flex items-center space-x-1.5">
             <div className={`w-4 h-4 rounded-full ${cls}`} />
@@ -131,6 +134,39 @@ export default function OrgChart() {
         <div className="text-text-sub/50 hidden sm:block">|</div>
         <span className="text-text-sub font-medium">── 연결선: 혼인 관계</span>
       </div>
+
+      {/* 1세대 조부모 Section */}
+      {gen1Grandfather && gen1Grandmother && (
+        <div className="bg-white border border-border-beige rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col items-center gap-4 max-w-xl mx-auto text-center animate-fade-in relative z-10">
+          <div className="absolute top-3 left-1/2 -translate-x-1/2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-text-sub bg-secondary/50 px-2.5 py-1 rounded-full whitespace-nowrap">
+              1세대 조부모 (가족의 뿌리)
+            </span>
+          </div>
+          <div className="flex items-center gap-4 pt-6">
+            <MemberCard
+              member={gen1Grandfather}
+              selected={isHighlighted(gen1Grandfather)}
+              compare={isCompare(gen1Grandfather)}
+              onClick={() => onCardClick(gen1Grandfather, selected, setSelected, setCompareId)}
+            />
+            <span className="text-border-beige font-semibold">──</span>
+            <MemberCard
+              member={gen1Grandmother}
+              selected={isHighlighted(gen1Grandmother)}
+              compare={isCompare(gen1Grandmother)}
+              onClick={() => onCardClick(gen1Grandmother, selected, setSelected, setCompareId)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Vertical connection line */}
+      {gen1Grandfather && gen1Grandmother && (
+        <div className="flex justify-center -my-6 z-0">
+          <div className="w-px h-16 bg-border-beige" />
+        </div>
+      )}
 
       {/* Family Tree Groups */}
       <div className="space-y-12">
