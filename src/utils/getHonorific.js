@@ -410,83 +410,119 @@ export function getHonorific(memberA, memberB, members) {
   // Case B: 세대가 다른 친족 관계
   // -------------------------------------------------------------------------
   
-  // 3세대 ↔ 2세대 (조카 ↔ 이모/고모/삼촌/외삼촌)
+  // 3세대 ↔ 2세대 (조카 ↔ 이모/고모/삼촌/외삼촌 및 그 배우자)
   if ((genA === 'generation3' && genB === 'generation2') || (genA === 'generation2' && genB === 'generation3')) {
     const isAgeneration3 = genA === 'generation3';
     const nieceNephew = isAgeneration3 ? memberA : memberB;
     const auntUncle = isAgeneration3 ? memberB : memberA;
 
+    // 조카 또는 조카의 배우자
+    const isNieceNephewSpouse = nieceNephew.category === 'spouse';
+    const directNieceNephew = isNieceNephewSpouse ? members.find(m => m.id === nieceNephew.spouseId) : nieceNephew;
+
     // 조카의 직계 부모 찾기
-    const parentDirect = members.find(m => nieceNephew.parentIds && nieceNephew.parentIds.includes(m.id) && m.category === 'generation2');
+    const parentDirect = directNieceNephew ? members.find(m => directNieceNephew.parentIds && directNieceNephew.parentIds.includes(m.id) && m.category === 'generation2') : null;
     
     if (parentDirect) {
       let auntUncleTitle = "";
-      let relationType = "숙질 (삼촌/고모/이모 ↔ 조카)";
+      let relationType = isNieceNephewSpouse ? "숙질 배우자 관계" : "숙질 (삼촌/고모/이모 ↔ 조카)";
 
       const isAuntUncleDirect = auntUncle.category !== 'spouse';
+      const directAuntUncle = isAuntUncleDirect ? auntUncle : members.find(m => m.id === auntUncle.spouseId);
       
-      if (isAuntUncleDirect) {
-        // 직계 고모/이모/삼촌/외삼촌
-        if (parentDirect.gender === 'male') {
-          // 친가 (아버지 쪽 형제자매)
-          if (auntUncle.gender === 'male') {
-            // 아버지의 남자 형제 ➜ 큰아버지 / 작은아버지
-            const isUncleOlderThanFather = isOlderThan(auntUncle, parentDirect, members);
-            auntUncleTitle = isUncleOlderThanFather ? "큰아버지" : "작은아버지";
+      if (directAuntUncle) {
+        if (isAuntUncleDirect) {
+          // 직계 고모/이모/삼촌/외삼촌
+          if (parentDirect.gender === 'male') {
+            // 친가 (아버지 쪽 형제자매)
+            if (directAuntUncle.gender === 'male') {
+              const isUncleOlderThanFather = isOlderThan(directAuntUncle, parentDirect, members);
+              auntUncleTitle = isUncleOlderThanFather ? "큰아버지" : "작은아버지";
+            } else {
+              auntUncleTitle = "고모";
+            }
           } else {
-            // 아버지의 여자 형제 ➜ 고모
-            auntUncleTitle = "고모";
+            // 외가 (어머니 쪽 형제자매)
+            if (directAuntUncle.gender === 'male') {
+              auntUncleTitle = "외삼촌";
+            } else {
+              auntUncleTitle = "이모";
+            }
           }
         } else {
-          // 외가 (어머니 쪽 형제자매)
-          if (auntUncle.gender === 'male') {
-            auntUncleTitle = "외삼촌";
-          } else {
-            auntUncleTitle = "이모";
-          }
-        }
-      } else {
-        // 배우자 (숙모, 고모부, 외숙모, 이모부 등)
-        const auSpouse = members.find(m => m.id === auntUncle.spouseId);
-        if (auSpouse) {
+          // 배우자 (숙모, 고모부, 외숙모, 이모부 등)
           if (parentDirect.gender === 'male') {
             // 친가 쪽 배우자
-            if (auSpouse.gender === 'male') {
-              // 아버지 여자 형제의 남편 ➜ 고모부
-              auntUncleTitle = "고모부";
-            } else {
-              // 아버지 남자 형제의 아내 ➜ 큰어머니 / 작은어머니
-              const isUncleOlderThanFather = isOlderThan(auSpouse, parentDirect, members);
+            if (directAuntUncle.gender === 'male') {
+              const isUncleOlderThanFather = isOlderThan(directAuntUncle, parentDirect, members);
               auntUncleTitle = isUncleOlderThanFather ? "큰어머니" : "작은어머니";
+            } else {
+              auntUncleTitle = "고모부";
             }
           } else {
             // 외가 쪽 배우자
-            if (auSpouse.gender === 'male') {
-              auntUncleTitle = "이모부";
-            } else {
+            if (directAuntUncle.gender === 'male') {
               auntUncleTitle = "외숙모";
+            } else {
+              auntUncleTitle = "이모부";
             }
           }
-        } else {
-          auntUncleTitle = auntUncle.gender === 'male' ? "아저씨" : "아주머니";
         }
       }
 
-      if (isAgeneration3) {
-        return {
-          aCallsB: auntUncleTitle,
-          bCallsA: getVocative(nieceNephew.name),
-          relation: relationType,
-          note: `${nieceNephew.name}은(는) ${auntUncle.name}의 조카이며, ${auntUncle.name}은(는) ${nieceNephew.name}의 2세대 친척(${auntUncleTitle}) 관계입니다.`
-        };
+      // If the niece/nephew is a spouse, adjust B calls A with "처"/"시" prefix
+      let aCallsB = "";
+      let bCallsA = "";
+      
+      if (isNieceNephewSpouse) {
+        // A calls B (sp)
+        if (nieceNephew.gender === 'male') {
+          aCallsB = `${nieceNephew.name.substring(1)} 서방`;
+        } else {
+          aCallsB = "새아기";
+        }
+        
+        // B (sp) calls A
+        if (nieceNephew.gender === 'male') {
+          if (parentDirect.gender === 'male') {
+            bCallsA = directAuntUncle.gender === 'male' ? "처삼촌" : "처고모";
+          } else {
+            bCallsA = directAuntUncle.gender === 'male' ? "처외삼촌" : "처이모";
+          }
+        } else {
+          if (parentDirect.gender === 'male') {
+            bCallsA = directAuntUncle.gender === 'male' ? "시삼촌" : "시고모";
+          } else {
+            bCallsA = directAuntUncle.gender === 'male' ? "시외삼촌" : "시이모";
+          }
+        }
+        
+        if (!isAuntUncleDirect) {
+          if (parentDirect.gender === 'male') {
+            if (directAuntUncle.gender === 'male') {
+              bCallsA = nieceNephew.gender === 'male' ? "처숙모" : "시숙모";
+            } else {
+              bCallsA = nieceNephew.gender === 'male' ? "처고모부" : "시고모부";
+            }
+          } else {
+            if (directAuntUncle.gender === 'male') {
+              bCallsA = nieceNephew.gender === 'male' ? "처외숙모" : "시외숙모";
+            } else {
+              bCallsA = nieceNephew.gender === 'male' ? "처이모부" : "시이모부";
+            }
+          }
+        }
       } else {
-        return {
-          aCallsB: getVocative(nieceNephew.name),
-          bCallsA: auntUncleTitle,
-          relation: relationType,
-          note: `${nieceNephew.name}은(는) ${auntUncle.name}의 조카이며, ${auntUncle.name}은(는) ${nieceNephew.name}의 2세대 친척(${auntUncleTitle}) 관계입니다.`
-        };
+        aCallsB = auntUncleTitle;
+        bCallsA = getVocative(nieceNephew.name);
       }
+
+      return {
+        aCallsB: isAgeneration3 ? aCallsB : bCallsA,
+        bCallsA: isAgeneration3 ? bCallsA : aCallsB,
+        relation: relationType,
+        note: `${directNieceNephew.name}은(는) ${directAuntUncle.name}의 조카입니다.`
+      };
     }
   }
 
