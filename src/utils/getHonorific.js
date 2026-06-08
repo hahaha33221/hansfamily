@@ -1,4 +1,5 @@
 export const CATEGORY_LABEL = {
+  generation1: '조부모',
   generation2: '직계 형제자매',
   generation3: '사촌',
   generation4: '자녀',
@@ -6,6 +7,7 @@ export const CATEGORY_LABEL = {
 };
 
 export const CATEGORY_TAG = {
+  generation1: 'tag-direct',
   generation2: 'tag-direct',
   generation3: 'tag-direct',
   generation4: 'tag-child',
@@ -13,6 +15,7 @@ export const CATEGORY_TAG = {
 };
 
 export const INITIAL_CLASS = {
+  generation1: 'initial-direct',
   generation2: 'initial-direct',
   generation3: 'initial-direct',
   generation4: 'initial-child',
@@ -429,6 +432,30 @@ export function getHonorific(memberA, memberB, members) {
         bCallsA: grandTitle,
         relation: "육촌 (종조부모 ↔ 조카손주)",
         note: "할아버지/할머니 항렬의 친척 관계입니다."
+      };
+    }
+  }
+
+  // 조부모 ↔ 손자녀 관계 (1세대 ↔ 3세대/4세대)
+  if ((genA === 'generation1' && (genB === 'generation3' || genB === 'generation4')) || ((genA === 'generation3' || genA === 'generation4') && genB === 'generation1')) {
+    const isAgrandparent = genA === 'generation1';
+    const grandparent = isAgrandparent ? memberA : memberB;
+    const grandchild = isAgrandparent ? memberB : memberA;
+    const grandTitle = grandparent.gender === 'male' ? '할아버지' : '할머니';
+    
+    if (isAgrandparent) {
+      return {
+        aCallsB: getVocative(grandchild.name),
+        bCallsA: grandTitle,
+        relation: '조부모 / 손자녀',
+        note: `${grandparent.name}은(는) ${grandchild.name}의 조부모입니다.`
+      };
+    } else {
+      return {
+        aCallsB: grandTitle,
+        bCallsA: getVocative(grandchild.name),
+        relation: '조부모 / 손자녀',
+        note: `${grandparent.name}은(는) ${grandchild.name}의 조부모입니다.`
       };
     }
   }

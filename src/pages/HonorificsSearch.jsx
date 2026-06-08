@@ -100,7 +100,10 @@ export default function HonorificsSearch() {
                   className="bg-white border border-border-beige hover:border-primary hover:bg-secondary/10 px-4 py-3.5 rounded-2xl text-sm font-semibold text-text-main hover:text-primary transition-all duration-200 text-center shadow-sm"
                 >
                   {m.name}
-                  {m.note && <span className="block text-[10px] text-text-sub font-normal mt-0.5">{m.note}</span>}
+                  <span className="block text-[10px] text-text-sub font-normal mt-0.5">
+                    {m.birthYear ? `${m.birthYear} · ` : ''}{m.gender === 'male' ? '남성' : '여성'}
+                    {m.note ? ` (${m.note})` : ''}
+                  </span>
                 </button>
               ))}
           </div>
@@ -127,7 +130,10 @@ export default function HonorificsSearch() {
                   className="bg-white border border-border-beige hover:border-primary hover:bg-secondary/10 px-4 py-3.5 rounded-2xl text-sm font-semibold text-text-main hover:text-primary transition-all duration-200 text-center shadow-sm"
                 >
                   {m.name}
-                  {m.note && <span className="block text-[10px] text-text-sub font-normal mt-0.5">{m.note}</span>}
+                  <span className="block text-[10px] text-text-sub font-normal mt-0.5">
+                    {m.birthYear ? `${m.birthYear} · ` : ''}{m.gender === 'male' ? '남성' : '여성'}
+                    {m.note ? ` (${m.note})` : ''}
+                  </span>
                 </button>
               ))}
           </div>

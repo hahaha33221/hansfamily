@@ -7,16 +7,17 @@ import styles from './OrgChart.module.css';
 const GROUP_ORDER = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7'];
 
 const GROUP_LABEL = {
-  g1: '가족 1 (한기남 계열)',
-  g2: '가족 2 · 맏이 (한위수 계열)',
-  g3: '가족 3 (한옥수 계열)',
-  g4: '가족 4 (한범윤 계열)',
-  g5: '가족 5 (한필점 계열)',
-  g6: '가족 6 (한정숙 계열)',
-  g7: '가족 7 (한영수 계열)',
+  g1: '한기남 가족',
+  g2: '한위수 가족',
+  g3: '한옥수 가족',
+  g4: '한범윤',
+  g5: '한필점 가족',
+  g6: '한정숙 가족',
+  g7: '한영수 가족',
 };
 
 const INITIAL_CLASS = {
+  generation1: styles.initialDirect,
   generation2: styles.initialDirect,
   generation3: styles.initialDirect,
   generation4: styles.initialChild,
@@ -253,7 +254,9 @@ function MemberCard({ member, selected, compare, onClick, small }) {
       </div>
       <div className="space-y-0.5">
         <p className={`font-serif font-bold text-text-main ${small ? 'text-xs' : 'text-sm'}`}>{member.name}</p>
-        {member.birthYear && <p className="text-[10px] text-text-sub/80">{member.birthYear}</p>}
+        <p className="text-[10px] text-text-sub/80">
+          {member.birthYear ? `${member.birthYear} · ` : ''}{member.gender === 'male' ? '남' : '여'}
+        </p>
         {member.note && <p className="text-[9px] text-primary font-medium truncate max-w-[70px]">{member.note}</p>}
       </div>
     </button>

@@ -281,7 +281,7 @@ export default function Admin() {
                   <td className="p-4 text-text-sub">{m.gender === 'male' ? '남성' : m.gender === 'female' ? '여성' : '미확정'}</td>
                   <td className="p-4 text-text-sub">{m.birthYear ? `${m.birthYear}년생` : '-'}</td>
                   <td className="p-4 text-text-sub">
-                    {m.category === 'generation2' ? '2세대 직계' : m.category === 'generation3' ? '3세대 사촌' : m.category === 'generation4' ? '4세대 자녀' : '배우자'}
+                    {m.category === 'generation1' ? '1세대 조부모' : m.category === 'generation2' ? '2세대 직계' : m.category === 'generation3' ? '3세대 사촌' : m.category === 'generation4' ? '4세대 자녀' : '배우자'}
                   </td>
                   <td className="p-4 text-text-sub">{getSpouseName(m.spouseId)}</td>
                   <td className="p-4">
@@ -316,7 +316,7 @@ export default function Admin() {
                 <div className="flex items-center space-x-1.5">
                   <span className="font-bold text-text-main">{m.name}</span>
                   <span className="text-[10px] bg-secondary/50 text-accent px-2 py-0.5 rounded-full font-semibold">
-                    {m.category === 'generation2' ? '2세대' : m.category === 'generation3' ? '3세대' : m.category === 'generation4' ? '4세대' : '배우자'}
+                    {m.category === 'generation1' ? '1세대' : m.category === 'generation2' ? '2세대' : m.category === 'generation3' ? '3세대' : m.category === 'generation4' ? '4세대' : '배우자'}
                   </span>
                 </div>
                 <div className="text-xs text-text-sub font-medium">
@@ -403,6 +403,7 @@ export default function Admin() {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full bg-background border border-border-beige rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main"
                 >
+                  <option value="generation1">1세대 조부모</option>
                   <option value="generation2">2세대 직계</option>
                   <option value="generation3">3세대 사촌</option>
                   <option value="generation4">4세대 자녀</option>

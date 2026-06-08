@@ -14,7 +14,7 @@ export function getStoredMembers() {
   }
   try {
     const parsed = JSON.parse(stored);
-    if (parsed.length === 27 || parsed.some(m => m.category === 'direct' || m.category === 'child')) {
+    if (parsed.length !== 53 || parsed.some(m => m.category === 'direct' || m.category === 'child')) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(initialMembers));
       return initialMembers;
     }

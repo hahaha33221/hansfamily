@@ -124,7 +124,7 @@ export default function FamilyList() {
               {getCategoryLabel(member)}
             </p>
             <p className="text-xs text-text-sub mt-0.5">
-              {member.birthYear ? `${member.birthYear}년생` : '연도 미정'}
+              {member.birthYear ? `${member.birthYear}년생` : '연도 미정'} · {member.gender === 'male' ? '남성' : '여성'}
             </p>
 
             {/* Hover Action Button overlay */}

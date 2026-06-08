@@ -43,7 +43,7 @@ export default function Home() {
             <span className="text-primary">서로를 제대로</span> 부르고 있나요?
           </h1>
           <p className="text-lg text-text-sub max-w-2xl mx-auto lg:mx-0 font-sans">
-            사촌, 이종사촌 등 복잡한 가족 관계 속에서 서로의 정식 호칭을 쉽고 빠르게 확인해보세요. 27명의 따뜻한 우리 가족 안내소입니다.
+            사촌, 이종사촌 등 복잡한 가족 관계 속에서 서로의 정식 호칭을 쉽고 빠르게 확인해보세요. {membersData.length}명의 따뜻한 우리 가족 안내소입니다.
           </p>
           <div className="flex flex-col sm:flex-wrap sm:flex-row gap-3 justify-center lg:justify-start pt-2">
             <button
@@ -90,7 +90,7 @@ export default function Home() {
                   <option value="">나를 선택하세요</option>
                   {sortedMembers.map((m) => (
                     <option key={m.id} value={m.id}>
-                      {m.name} {m.note ? `(${m.note})` : ''}
+                      {m.name} ({m.birthYear ? `${m.birthYear} · ` : ''}{m.gender === 'male' ? '남' : '여'}{m.note ? `, ${m.note}` : ''})
                     </option>
                   ))}
                 </select>
@@ -110,7 +110,7 @@ export default function Home() {
                   <option value="">상대방을 선택하세요</option>
                   {sortedMembers.map((m) => (
                     <option key={m.id} value={m.id}>
-                      {m.name} {m.note ? `(${m.note})` : ''}
+                      {m.name} ({m.birthYear ? `${m.birthYear} · ` : ''}{m.gender === 'male' ? '남' : '여'}{m.note ? `, ${m.note}` : ''})
                     </option>
                   ))}
                 </select>

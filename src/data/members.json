@@ -1,55 +1,78 @@
 [
-  {"id":"g1-direct","name":"한기남","gender":"female","birthYear":1952,"category":"generation2","spouseId":"g1-spouse","parentIds":[],"childIds":["c1","c2","c3","c4"],"groupId":"g1","note":"2세대 장녀"},
-  {"id":"g1-spouse","name":"김영상","gender":"male","birthYear":1947,"category":"spouse","spouseId":"g1-direct","parentIds":[],"childIds":["c1","c2","c3","c4"],"groupId":"g1","note":"한기남 남편"},
-  {"id":"g2-direct","name":"한위수","gender":"male","birthYear":1954,"category":"generation2","spouseId":"g2-spouse","parentIds":[],"childIds":["c5","c6","c7"],"groupId":"g2","note":""},
-  {"id":"g2-spouse","name":"정현숙","gender":"female","birthYear":null,"category":"spouse","spouseId":"g2-direct","parentIds":[],"childIds":["c5","c6","c7"],"groupId":"g2","note":"출생년도 미상"},
-  {"id":"g3-direct","name":"한옥수","gender":"male","birthYear":1957,"category":"generation2","spouseId":"g3-spouse","parentIds":[],"childIds":["c8","c11"],"groupId":"g3","note":""},
-  {"id":"g3-spouse","name":"구영순","gender":"female","birthYear":1961,"category":"spouse","spouseId":"g3-direct","parentIds":[],"childIds":["c8","c11"],"groupId":"g3","note":""},
-  {"id":"g4-direct","name":"한범윤","gender":"male","birthYear":1961,"category":"generation2","spouseId":null,"parentIds":[],"childIds":[],"groupId":"g4","note":""},
-  {"id":"g5-direct","name":"한필점","gender":"female","birthYear":1963,"category":"generation2","spouseId":"g5-spouse","parentIds":[],"childIds":["c9","c13"],"groupId":"g5","note":""},
-  {"id":"g5-spouse","name":"이점호","gender":"male","birthYear":1958,"category":"spouse","spouseId":"g5-direct","parentIds":[],"childIds":["c9","c13"],"groupId":"g5","note":""},
-  {"id":"g6-direct","name":"한정숙","gender":"female","birthYear":1965,"category":"generation2","spouseId":"g6-spouse","parentIds":[],"childIds":["c10","c15"],"groupId":"g6","note":""},
-  {"id":"g6-spouse","name":"설재현","gender":"male","birthYear":1965,"category":"spouse","spouseId":"g6-direct","parentIds":[],"childIds":["c10","c15"],"groupId":"g6","note":""},
-  {"id":"g7-direct","name":"한영수","gender":"male","birthYear":1967,"category":"generation2","spouseId":"g7-spouse","parentIds":[],"childIds":["c12","c14"],"groupId":"g7","note":""},
-  {"id":"g7-spouse","name":"양순옥","gender":"female","birthYear":1967,"category":"spouse","spouseId":"g7-direct","parentIds":[],"childIds":["c12","c14"],"groupId":"g7","note":""},
+  {"id":"gen1-1","name":"한길상","gender":"male","birthYear":1923,"category":"generation1","spouseId":"gen1-2","parentIds":[],"childIds":["g1","g2","g3","g4","g5","g6","g7"],"groupId":"root","note":"조부"},
+  {"id":"gen1-2","name":"박학순","gender":"female","birthYear":1926,"category":"generation1","spouseId":"gen1-1","parentIds":[],"childIds":["g1","g2","g3","g4","g5","g6","g7"],"groupId":"root","note":"조모"},
 
-  {"id":"c1","name":"김은희","gender":"female","birthYear":1973,"category":"generation3","spouseId":"c1-sp","parentIds":["g1-direct","g1-spouse"],"childIds":["d1","d2"],"groupId":"g1","note":""},
+  {"id":"g1","name":"한기남","gender":"female","birthYear":1952,"category":"generation2","spouseId":"g1-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c1","c2","c3","c4"],"groupId":"g1","note":""},
+  {"id":"g1-sp","name":"김영상","gender":"male","birthYear":1947,"category":"spouse","spouseId":"g1","parentIds":[],"childIds":["c1","c2","c3","c4"],"groupId":"g1","note":"한기남 남편"},
+
+  {"id":"g2","name":"한위수","gender":"male","birthYear":1954,"category":"generation2","spouseId":"g2-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c5","c6","c7"],"groupId":"g2","note":""},
+  {"id":"g2-sp","name":"정현숙","gender":"female","birthYear":null,"category":"spouse","spouseId":"g2","parentIds":[],"childIds":["c5","c6","c7"],"groupId":"g2","note":"출생년도 미상"},
+
+  {"id":"g3","name":"한옥수","gender":"male","birthYear":1957,"category":"generation2","spouseId":"g3-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c8","c11"],"groupId":"g3","note":""},
+  {"id":"g3-sp","name":"구영순","gender":"female","birthYear":1961,"category":"spouse","spouseId":"g3","parentIds":[],"childIds":["c8","c11"],"groupId":"g3","note":""},
+
+  {"id":"g4","name":"한범윤","gender":"male","birthYear":1961,"category":"generation2","spouseId":null,"parentIds":["gen1-1","gen1-2"],"childIds":[],"groupId":"g4","note":""},
+
+  {"id":"g5","name":"한필점","gender":"female","birthYear":1963,"category":"generation2","spouseId":"g5-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c9","c13"],"groupId":"g5","note":""},
+  {"id":"g5-sp","name":"이점호","gender":"male","birthYear":1958,"category":"spouse","spouseId":"g5","parentIds":[],"childIds":["c9","c13"],"groupId":"g5","note":""},
+
+  {"id":"g6","name":"한정숙","gender":"female","birthYear":1965,"category":"generation2","spouseId":"g6-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c10","c15"],"groupId":"g6","note":""},
+  {"id":"g6-sp","name":"설재현","gender":"male","birthYear":1965,"category":"spouse","spouseId":"g6","parentIds":[],"childIds":["c10","c15"],"groupId":"g6","note":""},
+
+  {"id":"g7","name":"한영수","gender":"male","birthYear":1967,"category":"generation2","spouseId":"g7-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c12","c14"],"groupId":"g7","note":""},
+  {"id":"g7-sp","name":"양순옥","gender":"female","birthYear":1967,"category":"spouse","spouseId":"g7","parentIds":[],"childIds":["c12","c14"],"groupId":"g7","note":""},
+
+  {"id":"c1","name":"김은희","gender":"female","birthYear":1973,"category":"generation3","spouseId":"c1-sp","parentIds":["g1","g1-sp"],"childIds":["d1","d2"],"groupId":"g1","note":""},
   {"id":"c1-sp","name":"오명종","gender":"male","birthYear":1970,"category":"spouse","spouseId":"c1","parentIds":[],"childIds":["d1","d2"],"groupId":"g1","note":"김은희 남편"},
-  {"id":"c2","name":"김지현","gender":"female","birthYear":1975,"category":"generation3","spouseId":"c2-sp","parentIds":["g1-direct","g1-spouse"],"childIds":["d3","d4"],"groupId":"g1","note":""},
-  {"id":"c2-sp","name":"권용하","gender":"male","birthYear":1972,"category":"spouse","spouseId":"c2","parentIds":[],"childIds":["d3","d4"],"groupId":"g1","note":"김지현 남편"},
-  {"id":"c3","name":"김봉만","gender":"male","birthYear":1981,"category":"generation3","spouseId":"c3-sp","parentIds":["g1-direct","g1-spouse"],"childIds":["d11"],"groupId":"g1","note":"1981년생 동갑 중 서열1"},
-  {"id":"c3-sp","name":"이민경","gender":"female","birthYear":1984,"category":"spouse","spouseId":"c3","parentIds":[],"childIds":["d11"],"groupId":"g1","note":"김봉만 처"},
-  {"id":"c4","name":"김흥만","gender":"male","birthYear":1981,"category":"generation3","spouseId":"c4-sp","parentIds":["g1-direct","g1-spouse"],"childIds":["d5","d7"],"groupId":"g1","note":"1981년생 동갑 중 서열2"},
-  {"id":"c4-sp","name":"추가희","gender":"female","birthYear":1981,"category":"spouse","spouseId":"c4","parentIds":[],"childIds":["d5","d7"],"groupId":"g1","note":"김흥만 처"},
-  {"id":"c5","name":"한창신","gender":"male","birthYear":1981,"category":"generation3","spouseId":"c5-sp","parentIds":["g2-direct","g2-spouse"],"childIds":["d6"],"groupId":"g2","note":"1981년생 동갑 중 서열3"},
-  {"id":"c5-sp","name":"변영숙","gender":"female","birthYear":1981,"category":"spouse","spouseId":"c5","parentIds":[],"childIds":["d6"],"groupId":"g2","note":"한창신 처"},
-  {"id":"c6","name":"한성임","gender":"female","birthYear":1984,"category":"generation3","spouseId":"c6-sp","parentIds":["g2-direct","g2-spouse"],"childIds":[],"groupId":"g2","note":""},
-  {"id":"c6-sp","name":"조중훈","gender":"male","birthYear":1977,"category":"spouse","spouseId":"c6","parentIds":[],"childIds":[],"groupId":"g2","note":"한성임 남편"},
-  {"id":"c7","name":"한승혁","gender":"male","birthYear":1985,"category":"generation3","spouseId":"c7-sp","parentIds":["g2-direct","g2-spouse"],"childIds":["d8","d9"],"groupId":"g2","note":""},
-  {"id":"c7-sp","name":"양인경","gender":"female","birthYear":1989,"category":"spouse","spouseId":"c7","parentIds":[],"childIds":["d8","d9"],"groupId":"g2","note":"한승혁 처"},
-  {"id":"c8","name":"한현주","gender":"female","birthYear":1987,"category":"generation3","spouseId":"c8-sp","parentIds":["g3-direct","g3-spouse"],"childIds":["d10"],"groupId":"g3","note":""},
-  {"id":"c8-sp","name":"이종석","gender":"male","birthYear":1983,"category":"spouse","spouseId":"c8","parentIds":[],"childIds":["d10"],"groupId":"g3","note":"한현주 남편"},
-  {"id":"c9","name":"이재호","gender":"male","birthYear":1990,"category":"generation3","spouseId":null,"parentIds":["g5-direct","g5-spouse"],"childIds":[],"groupId":"g5","note":""},
-  {"id":"c10","name":"설영은","gender":"female","birthYear":1992,"category":"generation3","spouseId":"c10-sp","parentIds":["g6-direct","g6-spouse"],"childIds":[],"groupId":"g6","note":""},
-  {"id":"c10-sp","name":"김도현","gender":"male","birthYear":1992,"category":"spouse","spouseId":"c10","parentIds":[],"childIds":[],"groupId":"g6","note":"설영은 남편"},
-  {"id":"c11","name":"한성주","gender":"male","birthYear":1993,"category":"generation3","spouseId":null,"parentIds":["g3-direct","g3-spouse"],"childIds":[],"groupId":"g3","note":""},
-  {"id":"c12","name":"한석환","gender":"male","birthYear":1994,"category":"generation3","spouseId":"c12-sp","parentIds":["g7-direct","g7-spouse"],"childIds":[],"groupId":"g7","note":"1994년생 동갑 중 서열2"},
-  {"id":"c12-sp","name":"오수현","gender":"female","birthYear":1995,"category":"spouse","spouseId":"c12","parentIds":[],"childIds":[],"groupId":"g7","note":"한석환 처"},
-  {"id":"c13","name":"이수경","gender":"female","birthYear":1994,"category":"generation3","spouseId":null,"parentIds":["g5-direct","g5-spouse"],"childIds":[],"groupId":"g5","note":"1994년생 동갑 중 서열1"},
-  {"id":"c14","name":"한석란","gender":"female","birthYear":1996,"category":"generation3","spouseId":"c14-sp","parentIds":["g7-direct","g7-spouse"],"childIds":["d12"],"groupId":"g7","note":""},
-  {"id":"c14-sp","name":"홍지석","gender":"male","birthYear":1992,"category":"spouse","spouseId":"c14","parentIds":[],"childIds":["d12"],"groupId":"g7","note":"한석란 남편"},
-  {"id":"c15","name":"설찬우","gender":"male","birthYear":1997,"category":"generation3","spouseId":null,"parentIds":["g6-direct","g6-spouse"],"childIds":[],"groupId":"g6","note":""},
 
-  {"id":"d1","name":"오지수","gender":"female","birthYear":2006,"category":"generation4","spouseId":null,"parentIds":["c1","c1-sp"],"childIds":[],"groupId":"g1","note":""},
-  {"id":"d2","name":"오지훈","gender":"male","birthYear":2012,"category":"generation4","spouseId":null,"parentIds":["c1","c1-sp"],"childIds":[],"groupId":"g1","note":""},
+  {"id":"c2","name":"김지현","gender":"female","birthYear":1975,"category":"generation3","spouseId":"c2-sp","parentIds":["g1","g1-sp"],"childIds":["d3","d4"],"groupId":"g1","note":""},
+  {"id":"c2-sp","name":"권용하","gender":"male","birthYear":1972,"category":"spouse","spouseId":"c2","parentIds":[],"childIds":["d3","d4"],"groupId":"g1","note":"김지현 남편"},
+
+  {"id":"c3","name":"김봉만","gender":"male","birthYear":1981,"category":"generation3","spouseId":"c3-sp","parentIds":["g1","g1-sp"],"childIds":["d11"],"groupId":"g1","note":"1981동갑서열1"},
+  {"id":"c3-sp","name":"이민경","gender":"female","birthYear":1984,"category":"spouse","spouseId":"c3","parentIds":[],"childIds":["d11"],"groupId":"g1","note":"김봉만 처"},
+
+  {"id":"c4","name":"김흥만","gender":"male","birthYear":1981,"category":"generation3","spouseId":"c4-sp","parentIds":["g1","g1-sp"],"childIds":["d5","d7"],"groupId":"g1","note":"1981동갑서열2"},
+  {"id":"c4-sp","name":"추가희","gender":"female","birthYear":1981,"category":"spouse","spouseId":"c4","parentIds":[],"childIds":["d5","d7"],"groupId":"g1","note":"김흥만 처"},
+
+  {"id":"c5","name":"한창신","gender":"male","birthYear":1981,"category":"generation3","spouseId":"c5-sp","parentIds":["g2","g2-sp"],"childIds":["d6"],"groupId":"g2","note":"1981동갑서열3"},
+  {"id":"c5-sp","name":"변영숙","gender":"female","birthYear":1981,"category":"spouse","spouseId":"c5","parentIds":[],"childIds":["d6"],"groupId":"g2","note":"한창신 처"},
+
+  {"id":"c6","name":"한성임","gender":"female","birthYear":1984,"category":"generation3","spouseId":"c6-sp","parentIds":["g2","g2-sp"],"childIds":[],"groupId":"g2","note":""},
+  {"id":"c6-sp","name":"조중훈","gender":"male","birthYear":1977,"category":"spouse","spouseId":"c6","parentIds":[],"childIds":[],"groupId":"g2","note":"한성임 남편"},
+
+  {"id":"c7","name":"한승혁","gender":"male","birthYear":1985,"category":"generation3","spouseId":"c7-sp","parentIds":["g2","g2-sp"],"childIds":["d8","d9"],"groupId":"g2","note":""},
+  {"id":"c7-sp","name":"양인경","gender":"female","birthYear":1989,"category":"spouse","spouseId":"c7","parentIds":[],"childIds":["d8","d9"],"groupId":"g2","note":"한승혁 처"},
+
+  {"id":"c8","name":"한현주","gender":"female","birthYear":1987,"category":"generation3","spouseId":"c8-sp","parentIds":["g3","g3-sp"],"childIds":["d10"],"groupId":"g3","note":""},
+  {"id":"c8-sp","name":"이종석","gender":"male","birthYear":1983,"category":"spouse","spouseId":"c8","parentIds":[],"childIds":["d10"],"groupId":"g3","note":"한현주 남편"},
+
+  {"id":"c9","name":"이재호","gender":"male","birthYear":1990,"category":"generation3","spouseId":null,"parentIds":["g5","g5-sp"],"childIds":[],"groupId":"g5","note":""},
+
+  {"id":"c10","name":"설영은","gender":"female","birthYear":1992,"category":"generation3","spouseId":"c10-sp","parentIds":["g6","g6-sp"],"childIds":[],"groupId":"g6","note":""},
+  {"id":"c10-sp","name":"김도현","gender":"male","birthYear":1992,"category":"spouse","spouseId":"c10","parentIds":[],"childIds":[],"groupId":"g6","note":"설영은 남편"},
+
+  {"id":"c11","name":"한성주","gender":"male","birthYear":1993,"category":"generation3","spouseId":null,"parentIds":["g3","g3-sp"],"childIds":[],"groupId":"g3","note":""},
+
+  {"id":"c12","name":"한석환","gender":"male","birthYear":1994,"category":"generation3","spouseId":"c12-sp","parentIds":["g7","g7-sp"],"childIds":[],"groupId":"g7","note":"1994동갑서열2"},
+  {"id":"c12-sp","name":"오수현","gender":"female","birthYear":1995,"category":"spouse","spouseId":"c12","parentIds":[],"childIds":[],"groupId":"g7","note":"한석환 처"},
+
+  {"id":"c13","name":"이수경","gender":"female","birthYear":1994,"category":"generation3","spouseId":null,"parentIds":["g5","g5-sp"],"childIds":[],"groupId":"g5","note":"1994동갑서열1"},
+
+  {"id":"c14","name":"한석란","gender":"female","birthYear":1996,"category":"generation3","spouseId":"c14-sp","parentIds":["g7","g7-sp"],"childIds":["d12"],"groupId":"g7","note":""},
+  {"id":"c14-sp","name":"홍지석","gender":"male","birthYear":1992,"category":"spouse","spouseId":"c14","parentIds":[],"childIds":["d12"],"groupId":"g7","note":"한석란 남편"},
+
+  {"id":"c15","name":"설찬우","gender":"male","birthYear":1997,"category":"generation3","spouseId":null,"parentIds":["g6","g6-sp"],"childIds":[],"groupId":"g6","note":""},
+
+  {"id":"d1","name":"오지수","gender":"female","birthYear":2006,"category":"generation4","spouseId":null,"parentIds":["c1","c1-sp"],"childIds":[],"groupId":"g1","note":"2006동갑서열1"},
+  {"id":"d2","name":"오지훈","gender":"male","birthYear":2012,"category":"generation4","spouseId":null,"parentIds":["c1","c1-sp"],"childIds":[],"groupId":"g1","note":"2012동갑서열1"},
   {"id":"d3","name":"권다현","gender":"female","birthYear":2000,"category":"generation4","spouseId":null,"parentIds":["c2","c2-sp"],"childIds":[],"groupId":"g1","note":""},
-  {"id":"d4","name":"권민수","gender":"male","birthYear":2006,"category":"generation4","spouseId":null,"parentIds":["c2","c2-sp"],"childIds":[],"groupId":"g1","note":""},
-  {"id":"d5","name":"김리원","gender":"female","birthYear":2012,"category":"generation4","spouseId":null,"parentIds":["c4","c4-sp"],"childIds":[],"groupId":"g1","note":""},
-  {"id":"d6","name":"한지운","gender":"male","birthYear":2012,"category":"generation4","spouseId":null,"parentIds":["c5","c5-sp"],"childIds":[],"groupId":"g2","note":""},
+  {"id":"d4","name":"권민수","gender":"male","birthYear":2006,"category":"generation4","spouseId":null,"parentIds":["c2","c2-sp"],"childIds":[],"groupId":"g1","note":"2006동갑서열2"},
+  {"id":"d5","name":"김리원","gender":"female","birthYear":2012,"category":"generation4","spouseId":null,"parentIds":["c4","c4-sp"],"childIds":[],"groupId":"g1","note":"2012동갑서열2"},
+  {"id":"d6","name":"한지운","gender":"male","birthYear":2012,"category":"generation4","spouseId":null,"parentIds":["c5","c5-sp"],"childIds":[],"groupId":"g2","note":"2012동갑서열3"},
   {"id":"d7","name":"김태완","gender":"male","birthYear":2019,"category":"generation4","spouseId":null,"parentIds":["c4","c4-sp"],"childIds":[],"groupId":"g1","note":""},
   {"id":"d8","name":"한지유","gender":"female","birthYear":2018,"category":"generation4","spouseId":null,"parentIds":["c7","c7-sp"],"childIds":[],"groupId":"g2","note":""},
-  {"id":"d9","name":"한정운","gender":"male","birthYear":2020,"category":"generation4","spouseId":null,"parentIds":["c7","c7-sp"],"childIds":[],"groupId":"g2","note":""},
-  {"id":"d10","name":"이승윤","gender":"male","birthYear":2020,"category":"generation4","spouseId":null,"parentIds":["c8","c8-sp"],"childIds":[],"groupId":"g3","note":""},
+  {"id":"d9","name":"한정운","gender":"male","birthYear":2020,"category":"generation4","spouseId":null,"parentIds":["c7","c7-sp"],"childIds":[],"groupId":"g2","note":"2020동갑서열1"},
+  {"id":"d10","name":"이승윤","gender":"male","birthYear":2020,"category":"generation4","spouseId":null,"parentIds":["c8","c8-sp"],"childIds":[],"groupId":"g3","note":"2020동갑서열2"},
   {"id":"d11","name":"김동우","gender":"male","birthYear":2023,"category":"generation4","spouseId":null,"parentIds":["c3","c3-sp"],"childIds":[],"groupId":"g1","note":""},
   {"id":"d12","name":"홍서아","gender":"female","birthYear":2026,"category":"generation4","spouseId":null,"parentIds":["c14","c14-sp"],"childIds":[],"groupId":"g7","note":"영아"}
 ]
