@@ -26,14 +26,23 @@ export const INITIAL_CLASS = {
  * 한글 이름 조사(vocative particle) 처리
  * 받침이 있으면 '아', 없으면 '야'를 붙임
  */
+export function getFirstName(name) {
+  if (!name) return "";
+  if (name.length > 1) {
+    return name.substring(1);
+  }
+  return name;
+}
+
 export function getVocative(name) {
   if (!name) return "";
-  const lastChar = name.charCodeAt(name.length - 1);
+  const firstName = getFirstName(name);
+  const lastChar = firstName.charCodeAt(firstName.length - 1);
   if (lastChar >= 0xAC00 && lastChar <= 0xD7A3) {
     const batchim = (lastChar - 0xAC00) % 28;
-    return batchim > 0 ? `${name}아` : `${name}야`;
+    return batchim > 0 ? `${firstName}아` : `${firstName}야`;
   }
-  return `${name}(아/야)`;
+  return `${firstName}(아/야)`;
 }
 
 /**
@@ -93,6 +102,20 @@ export function isOlderThan(memberA, memberB, members) {
     }
   }
 
+  return false;
+}
+
+/**
+ * A가 B의 조부모인지 판별하는 함수
+ */
+export function isGrandparentOf(memberA, memberB, members) {
+  if (!memberB.parentIds || memberB.parentIds.length === 0) return false;
+  const parentsB = members.filter(m => memberB.parentIds.includes(m.id));
+  for (const parent of parentsB) {
+    if (parent.parentIds && parent.parentIds.includes(memberA.id)) {
+      return true;
+    }
+  }
   return false;
 }
 
@@ -186,6 +209,87 @@ export function getHonorific(memberA, memberB, members) {
       bCallsA: getVocative(memberA.name),
       relation: '부모 / 자식',
       note: `${memberB.name}은(는) ${memberA.name}의 부모입니다.`
+    };
+  }
+
+  // 3.1. 직계 조부모 손자녀 관계 (2대 차이 직계)
+  if (isGrandparentOf(memberA, memberB, members)) {
+    return {
+      aCallsB: getVocative(memberB.name),
+      bCallsA: memberA.gender === 'male' ? '할아버지' : '할머니',
+      relation: '조부모 / 손자녀',
+      note: `${memberA.name}은(는) ${memberB.name}의 조부모입니다.`
+    };
+  }
+
+  if (isGrandparentOf(memberB, memberA, members)) {
+    return {
+      aCallsB: memberB.gender === 'male' ? '할아버지' : '할머니',
+      bCallsA: getVocative(memberA.name),
+      relation: '조부모 / 손자녀',
+      note: `${memberB.name}은(는) ${memberA.name}의 조부모입니다.`
+    };
+  }
+
+  // 3.2. 직계 부모의 배우자 또는 자식의 배우자 관계 (시부모/장인·장모 ↔ 사위/며느리)
+  const spouseB = memberB.spouseId ? members.find(m => m.id === memberB.spouseId) : null;
+  if (spouseB && spouseB.parentIds && spouseB.parentIds.includes(memberA.id)) {
+    let aCallsB = "";
+    let bCallsA = "";
+    if (memberB.gender === 'male') {
+      aCallsB = `${memberB.name.substring(1)} 서방`;
+      bCallsA = memberA.gender === 'male' ? '장인어른' : '장모님';
+    } else {
+      aCallsB = memberA.gender === 'male' ? '아가' : '새아기';
+      bCallsA = memberA.gender === 'male' ? '아버님' : '어머님';
+    }
+    return {
+      aCallsB,
+      bCallsA,
+      relation: memberB.gender === 'male' ? '장인·장모 / 사위' : '시부모 / 며느리',
+      note: `${memberA.name}은(는) ${spouseB.name}의 부모이며, ${memberB.name}은(는) ${spouseB.name}의 배우자입니다.`
+    };
+  }
+
+  const spouseA = memberA.spouseId ? members.find(m => m.id === memberA.spouseId) : null;
+  if (spouseA && spouseA.parentIds && spouseA.parentIds.includes(memberB.id)) {
+    let aCallsB = "";
+    let bCallsA = "";
+    if (memberA.gender === 'male') {
+      aCallsB = memberB.gender === 'male' ? '장인어른' : '장모님';
+      bCallsA = `${memberA.name.substring(1)} 서방`;
+    } else {
+      aCallsB = memberB.gender === 'male' ? '아버님' : '어머님';
+      bCallsA = memberB.gender === 'male' ? '아가' : '새아기';
+    }
+    return {
+      aCallsB,
+      bCallsA,
+      relation: memberA.gender === 'male' ? '장인·장모 / 사위' : '시부모 / 며느리',
+      note: `${memberB.name}은(는) ${spouseA.name}의 부모이며, ${memberA.name}은(는) ${spouseA.name}의 배우자입니다.`
+    };
+  }
+
+  // 3.3. 직계 조부모의 배우자 또는 손자녀의 배우자 관계 (조부모 ↔ 손주며느리/손주사위)
+  if (spouseB && isGrandparentOf(memberA, spouseB, members)) {
+    let aCallsB = memberB.gender === 'male' ? `${memberB.name.substring(1)} 서방` : (memberA.gender === 'male' ? '아가' : '새아기');
+    let bCallsA = memberA.gender === 'male' ? '할아버님' : '할머님';
+    return {
+      aCallsB,
+      bCallsA,
+      relation: '조부모 / 손주배우자',
+      note: `${memberA.name}은(는) ${spouseB.name}의 조부모이며, ${memberB.name}은(는) ${spouseB.name}의 배우자입니다.`
+    };
+  }
+
+  if (spouseA && isGrandparentOf(memberB, spouseA, members)) {
+    let aCallsB = memberB.gender === 'male' ? '할아버님' : '할머님';
+    let bCallsA = memberA.gender === 'male' ? `${memberA.name.substring(1)} 서방` : (memberB.gender === 'male' ? '아가' : '새아기');
+    return {
+      aCallsB,
+      bCallsA,
+      relation: '조부모 / 손주배우자',
+      note: `${memberB.name}은(는) ${spouseA.name}의 조부모이며, ${memberA.name}은(는) ${spouseA.name}의 배우자입니다.`
     };
   }
 
@@ -386,27 +490,79 @@ export function getHonorific(memberA, memberB, members) {
     }
   }
 
-  // 4세대 ↔ 3세대 (조카 ↔ 당숙/당고모 ➜ 5촌 관계)
+  // 4세대 ↔ 3세대 (조카 ↔ 삼촌/이모/고모/당숙/당고모 등 3촌 또는 5촌 관계)
   if ((genA === 'generation4' && genB === 'generation3') || (genA === 'generation3' && genB === 'generation4')) {
     const isAgeneration4 = genA === 'generation4';
     const child = isAgeneration4 ? memberA : memberB;
-    const parentCousin = isAgeneration4 ? memberB : memberA;
+    const relative = isAgeneration4 ? memberB : memberA;
 
-    const honorificTerm = parentCousin.gender === 'male' ? "아저씨 (당숙)" : "아주머니 (당숙모)";
+    // Find parent of child who is direct generation3
+    const childParent = members.find(m => child.parentIds && child.parentIds.includes(m.id) && m.category === 'generation3');
+    
+    if (childParent) {
+      const isDirectUncleAunt = childParent.groupId === relative.groupId;
+      let honorificTerm = "";
+      let relationType = "";
+      
+      if (isDirectUncleAunt) {
+        // 3촌 관계 (삼촌, 고모, 이모, 외삼촌 및 배우자)
+        relationType = "이숙질 (삼촌/고모/이모 ↔ 조카)";
+        const directRel = relative.category === 'spouse' ? members.find(m => m.id === relative.spouseId) : relative;
+        
+        if (directRel) {
+          if (childParent.gender === 'male') {
+            // 친가 (아버지 쪽 형제자매)
+            if (directRel.gender === 'male') {
+              const isOlderThanFather = isOlderThan(directRel, childParent, members);
+              if (relative.category === 'spouse') {
+                honorificTerm = isOlderThanFather ? "큰어머니" : "작은어머니";
+              } else {
+                honorificTerm = isOlderThanFather ? "큰아버지" : "작은아버지";
+              }
+            } else {
+              if (relative.category === 'spouse') {
+                honorificTerm = "고모부";
+              } else {
+                honorificTerm = "고모";
+              }
+            }
+          } else {
+            // 외가 (어머니 쪽 형제자매)
+            if (directRel.gender === 'male') {
+              if (relative.category === 'spouse') {
+                honorificTerm = "외숙모";
+              } else {
+                honorificTerm = "외삼촌";
+              }
+            } else {
+              if (relative.category === 'spouse') {
+                honorificTerm = "이모부";
+              } else {
+                honorificTerm = "이모";
+              }
+            }
+          }
+        }
+      } else {
+        // 5촌 관계 (당숙, 당고모 및 배우자)
+        relationType = "오촌 (당숙·당고모 ↔ 조카)";
+        const directRel = relative.category === 'spouse' ? members.find(m => m.id === relative.spouseId) : relative;
+        if (directRel) {
+          if (relative.category === 'spouse') {
+            honorificTerm = directRel.gender === 'male' ? "아주머니 (당숙모)" : "아저씨 (당고모부)";
+          } else {
+            honorificTerm = relative.gender === 'male' ? "아저씨 (당숙)" : "아주머니 (당고모)";
+          }
+        } else {
+          honorificTerm = relative.gender === 'male' ? "아저씨 (당숙)" : "아주머니 (당고모)";
+        }
+      }
 
-    if (isAgeneration4) {
       return {
-        aCallsB: honorificTerm,
-        bCallsA: getVocative(child.name),
-        relation: "오촌 (당숙·당고모 ↔ 조카)",
-        note: `부모의 사촌 관계에 따른 5촌간의 호칭입니다.`
-      };
-    } else {
-      return {
-        aCallsB: getVocative(child.name),
-        bCallsA: honorificTerm,
-        relation: "오촌 (당숙·당고모 ↔ 조카)",
-        note: `부모의 사촌 관계에 따른 5촌간의 호칭입니다.`
+        aCallsB: isAgeneration4 ? honorificTerm : getVocative(child.name),
+        bCallsA: isAgeneration4 ? getVocative(child.name) : honorificTerm,
+        relation: relationType,
+        note: `3세대와 4세대 간의 친족 관계에 따른 호칭입니다.`
       };
     }
   }
@@ -460,5 +616,12 @@ export function getHonorific(memberA, memberB, members) {
     }
   }
 
-  return { aCallsB: "-", bCallsA: "-", relation: "가족", note: "" };
+  const defaultAcallsB = `${getFirstName(memberB.name)} 님`;
+  const defaultBcallsA = `${getFirstName(memberA.name)} 님`;
+  return {
+    aCallsB: defaultAcallsB,
+    bCallsA: defaultBcallsA,
+    relation: "가족 (친척)",
+    note: "두 구성원 간의 관계 호칭입니다."
+  };
 }
