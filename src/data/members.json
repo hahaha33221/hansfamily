@@ -6,7 +6,7 @@
   {"id":"g1-sp","name":"김영상","gender":"male","birthYear":1947,"category":"spouse","spouseId":"g1","parentIds":[],"childIds":["c1","c2","c3","c4"],"groupId":"g1","note":"한기남 남편"},
 
   {"id":"g2","name":"한위수","gender":"male","birthYear":1954,"category":"generation2","spouseId":"g2-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c5","c6","c7"],"groupId":"g2","note":""},
-  {"id":"g2-sp","name":"정현숙","gender":"female","birthYear":null,"category":"spouse","spouseId":"g2","parentIds":[],"childIds":["c5","c6","c7"],"groupId":"g2","note":"출생년도 미상"},
+  {"id":"g2-sp","name":"정현숙","gender":"female","birthYear":null,"category":"spouse","spouseId":"g2","parentIds":[],"childIds":["c5","c6","c7"],"groupId":"g2","note":""},
 
   {"id":"g3","name":"한옥수","gender":"male","birthYear":1957,"category":"generation2","spouseId":"g3-sp","parentIds":["gen1-1","gen1-2"],"childIds":["c8","c11"],"groupId":"g3","note":""},
   {"id":"g3-sp","name":"구영순","gender":"female","birthYear":1961,"category":"spouse","spouseId":"g3","parentIds":[],"childIds":["c8","c11"],"groupId":"g3","note":""},

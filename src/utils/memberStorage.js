@@ -19,15 +19,17 @@ export function getStoredMembers() {
       return initialMembers;
     }
 
-    // Clean up '미혼' from notes in local storage if present
+    // Clean up '미혼' and '미상' from notes in local storage if present
     let modified = false;
     const cleaned = parsed.map(m => {
-      if (m.note && m.note.includes('미혼')) {
+      if (m.note && (m.note.includes('미혼') || m.note.includes('미상'))) {
         modified = true;
         let newNote = m.note
           .replace(/미혼\s*·\s*/g, '')
           .replace(/\s*·\s*미혼/g, '')
           .replace(/미혼/g, '')
+          .replace(/출생년도\s*미상/g, '')
+          .replace(/미상/g, '')
           .trim();
         return { ...m, note: newNote };
       }
