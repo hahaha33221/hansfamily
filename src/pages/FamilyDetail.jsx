@@ -1,18 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, User, Heart, Star, Sparkles, MessageCircle } from 'lucide-react';
-import { getStoredMembers } from '../utils/memberStorage';
+import { ArrowLeft, User, Heart, Star, Sparkles, MessageCircle, Camera, Check, AlertCircle } from 'lucide-react';
+import { getStoredMembers, saveStoredMembers } from '../utils/memberStorage';
 import { getHonorific } from '../utils/getHonorific';
 
-export default function FamilyDetail() {
+export default function FamilyDetail({ currentUser, onUpdateUser }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const membersData = useMemo(() => getStoredMembers(), []);
+  
+  // Track dynamically loaded state for updates
+  const [membersList, setMembersList] = useState(() => getStoredMembers());
   const [meId, setMeId] = useState('');
+  const [imageError, setImageError] = useState('');
 
-
-  // Find the selected member
-  const member = membersData.find((m) => m.id === id);
+  // Find the selected member from state
+  const member = membersList.find((m) => m.id === id);
 
   if (!member) {
     return (
@@ -26,16 +28,16 @@ export default function FamilyDetail() {
   }
 
   // Find relatives
-  const spouse = membersData.find((m) => m.id === member.spouseId);
-  const children = membersData.filter((m) => member.childIds && member.childIds.includes(m.id));
-  const parents = membersData.filter((m) => member.parentIds && member.parentIds.includes(m.id));
+  const spouse = membersList.find((m) => m.id === member.spouseId);
+  const children = membersList.filter((m) => member.childIds && member.childIds.includes(m.id));
+  const parents = membersList.filter((m) => member.parentIds && member.parentIds.includes(m.id));
 
   // Get active calculations if "me" is selected
-  const me = membersData.find((m) => m.id === meId);
-  const relationship = me ? getHonorific(me, member, membersData) : null;
+  const me = membersList.find((m) => m.id === meId);
+  const relationship = me ? getHonorific(me, member, membersList) : null;
 
   // Filter out the detail member from the "Me" dropdown list
-  const otherMembersForMe = [...membersData]
+  const otherMembersForMe = [...membersList]
     .filter((m) => m.id !== member.id)
     .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
@@ -47,6 +49,50 @@ export default function FamilyDetail() {
       case 'spouse': return m.note || '배우자';
       default: return '가족';
     }
+  };
+
+  const isOwnProfile = currentUser && currentUser.id === member.id;
+  const isAdmin = localStorage.getItem('hansfamily_admin_logged_in') === 'true';
+  const canEditProfile = isOwnProfile || isAdmin;
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Check file size (limit to 2MB for localStorage)
+    if (file.size > 2 * 1024 * 1024) {
+      setImageError('이미지 크기는 2MB 이하여야 합니다.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      
+      // Update local storage and component states
+      const updatedMembers = membersList.map((m) => {
+        if (m.id === member.id) {
+          return { ...m, profileImage: base64String };
+        }
+        return m;
+      });
+
+      try {
+        saveStoredMembers(updatedMembers);
+        setMembersList(updatedMembers);
+        setImageError('');
+        
+        // Notify App.jsx about the user profile change if it is the current user's profile
+        if (isOwnProfile && onUpdateUser) {
+          const updatedSelf = updatedMembers.find((m) => m.id === member.id);
+          onUpdateUser(updatedSelf);
+        }
+      } catch (err) {
+        setImageError('로컬 저장 공간 부족으로 프로필 이미지를 저장할 수 없습니다.');
+        console.error(err);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -64,13 +110,59 @@ export default function FamilyDetail() {
       <div className="bg-white border border-border-beige rounded-3xl p-6 sm:p-8 shadow-sm space-y-8">
         {/* Profile Info Header */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 border-b border-border-beige/50 pb-6">
-          <div className="w-20 h-20 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-3xl font-serif">
-            {member.name.charAt(0)}
+          <div className="relative group">
+            {member.profileImage ? (
+              <div className="w-20 h-20 rounded-full overflow-hidden border border-border-beige shadow-sm">
+                <img
+                  src={member.profileImage}
+                  alt={member.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div style={{ display: 'none' }} className="w-full h-full bg-primary/10 text-primary items-center justify-center font-bold text-3xl font-serif">
+                  {member.name.charAt(0)}
+                </div>
+              </div>
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-3xl font-serif">
+                {member.name.charAt(0)}
+              </div>
+            )}
+            
+            {/* Own Profile / Admin Camera Overlay */}
+            {canEditProfile && (
+              <label className="absolute bottom-0 right-0 bg-primary hover:bg-primary/95 text-white p-1.5 rounded-full cursor-pointer shadow-md hover:scale-105 transition-all">
+                <Camera size={14} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+            )}
           </div>
+
           <div className="text-center sm:text-left space-y-1.5 flex-1">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-bold font-serif text-text-main">{member.name}</h1>
-              <span className="inline-block self-center bg-secondary/50 text-accent px-3 py-1 rounded-full text-xs font-semibold">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-center sm:justify-start">
+              <div className="flex items-center gap-2 justify-center sm:justify-start">
+                <h1 className="text-2xl sm:text-3xl font-bold font-serif text-text-main">{member.name}</h1>
+                {isOwnProfile && (
+                  <span className="bg-primary/15 text-primary text-[10px] px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                    <Check size={10} /> 본인 프로필
+                  </span>
+                )}
+                {isAdmin && !isOwnProfile && (
+                  <span className="bg-accent/15 text-accent text-[10px] px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                    관리자 권한
+                  </span>
+                )}
+              </div>
+              <span className="inline-block bg-secondary/50 text-accent px-3 py-1 rounded-full text-xs font-semibold">
                 {getCategoryLabel(member)}
               </span>
             </div>
@@ -82,6 +174,17 @@ export default function FamilyDetail() {
               <p className="text-sm text-primary font-medium bg-primary/5 px-3 py-1.5 rounded-xl inline-block mt-1">
                 📌 {member.note}
               </p>
+            )}
+            {isOwnProfile && (
+              <p className="text-xs text-text-sub block mt-1.5">
+                📷 오른쪽 아래 카메라 버튼을 누르면 나만의 고유 프로필 이미지를 등록/수정할 수 있습니다.
+              </p>
+            )}
+            {imageError && (
+              <div className="flex items-center gap-1 text-red-500 text-xs font-semibold mt-1">
+                <AlertCircle size={12} />
+                <span>{imageError}</span>
+              </div>
             )}
           </div>
         </div>

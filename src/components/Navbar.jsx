@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Users, Search, BookOpen, Settings, Menu, X, Network } from 'lucide-react';
+import { Home, Users, Search, BookOpen, Settings, Menu, X, Network, LogOut } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ currentUser, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -43,7 +43,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center space-x-2 text-text-main group">
+          <NavLink to="/" className="flex items-center space-x-2 text-text-main group flex-shrink-0">
             <div className="bg-primary/10 p-2 rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
               <Home size={20} />
             </div>
@@ -72,8 +72,52 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Mobile hamburger button */}
-          <div className="flex md:hidden">
+          {/* User profile & Logout on Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
+            {currentUser && (
+              <div className="flex items-center space-x-2.5">
+                <NavLink to={`/family/${currentUser.id}`} className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                  {currentUser.profileImage ? (
+                    <img
+                      src={currentUser.profileImage}
+                      alt={currentUser.name}
+                      className="w-7 h-7 rounded-full object-cover border border-border-beige"
+                    />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
+                      {currentUser.name.charAt(0)}
+                    </div>
+                  )}
+                  <span className="text-sm font-semibold text-text-main">{currentUser.name}님</span>
+                </NavLink>
+                <button
+                  onClick={onLogout}
+                  className="p-2 text-text-sub hover:text-red-500 rounded-full hover:bg-red-50 transition-colors"
+                  title="로그아웃"
+                >
+                  <LogOut size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile hamburger & profile button */}
+          <div className="flex md:hidden items-center space-x-2">
+            {currentUser && (
+              <NavLink to={`/family/${currentUser.id}`} className="w-8 h-8 rounded-full overflow-hidden border border-border-beige flex items-center justify-center">
+                {currentUser.profileImage ? (
+                  <img
+                    src={currentUser.profileImage}
+                    alt={currentUser.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
+                    {currentUser.name.charAt(0)}
+                  </div>
+                )}
+              </NavLink>
+            )}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-text-main hover:text-primary p-2 focus:outline-none transition-colors"
@@ -108,6 +152,15 @@ export default function Navbar() {
               <span>{item.name}</span>
             </NavLink>
           ))}
+          {currentUser && (
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-medium text-red-500 hover:bg-red-50 transition-all duration-200"
+            >
+              <LogOut size={18} />
+              <span>로그아웃</span>
+            </button>
+          )}
         </div>
       </div>
     </nav>

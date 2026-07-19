@@ -14,7 +14,8 @@ export function getStoredMembers() {
   }
   try {
     const parsed = JSON.parse(stored);
-    if (parsed.length !== 53 || parsed.some(m => m.category === 'direct' || m.category === 'child')) {
+    // Check if credentials exist in parsed, otherwise reset to populate them
+    if (parsed.length !== 53 || !parsed[0].username) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(initialMembers));
       return initialMembers;
     }

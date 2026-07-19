@@ -111,10 +111,28 @@ export default function FamilyList() {
             onClick={() => navigate(`/family/${member.id}`)}
             className="group relative bg-white border border-border-beige rounded-3xl p-5 sm:p-6 text-center cursor-pointer shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300"
           >
-            {/* Initial Circle */}
-            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-2xl mb-4 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-              {getInitial(member.name)}
-            </div>
+            {/* Profile Photo or Initial Circle */}
+            {member.profileImage ? (
+              <div className="mx-auto w-16 h-16 rounded-full overflow-hidden mb-4 border border-border-beige group-hover:scale-105 transition-transform duration-300">
+                <img
+                  src={member.profileImage}
+                  alt={member.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div style={{ display: 'none' }} className="w-full h-full bg-primary/10 text-primary items-center justify-center font-bold text-2xl group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  {getInitial(member.name)}
+                </div>
+              </div>
+            ) : (
+              <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-2xl mb-4 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                {getInitial(member.name)}
+              </div>
+            )}
 
             {/* Profile Info */}
             <h2 className="text-lg font-bold text-text-main group-hover:text-primary transition-colors font-serif">

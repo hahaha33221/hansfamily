@@ -69,53 +69,94 @@ export default function OrgChart() {
         </p>
       </div>
 
-      {/* Result Panel */}
-      {selected && (
-        <div className={`${styles.resultPanel} bg-white border border-border-beige rounded-3xl p-6 shadow-md max-w-2xl mx-auto animate-fade-in`}>
-          {!compareId ? (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
-              <p className="text-sm text-text-sub font-medium">
-                👉 <span className="font-bold text-primary">{selected.name}</span> 선택됨 — 호칭을 비교할 두 번째 가족 카드를 클릭하세요.
-              </p>
-              <button
-                className="text-xs bg-secondary hover:bg-secondary/80 text-accent font-bold px-4 py-2 rounded-xl transition-all"
+      {/* Instructions Toast when only one person is selected */}
+      {selected && !compareId && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-primary text-white px-6 py-3.5 rounded-2xl shadow-xl flex items-center space-x-3 animate-fade-in font-sans text-sm font-semibold">
+          <span>👉 {selected.name} 선택됨 — 두 번째 가족 구성원 카드를 클릭하세요.</span>
+          <button 
+            onClick={() => { setSelected(null); setCompareId(null); }}
+            className="bg-white/20 hover:bg-white/30 text-white rounded-lg px-2.5 py-1 text-xs transition-colors"
+          >
+            취소
+          </button>
+        </div>
+      )}
+
+      {/* Result Modal Popup - Only triggers when BOTH are selected */}
+      {selected && compareId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+          {/* Backdrop click to dismiss */}
+          <div className="absolute inset-0" onClick={() => { setSelected(null); setCompareId(null); }} />
+
+          <div className={`${styles.resultPanel} relative bg-white border border-border-beige rounded-3xl p-6 sm:p-8 shadow-2xl max-w-xl w-full mx-auto animate-scale-up space-y-6 z-10`}>
+            {/* Modal Header */}
+            <div className="flex justify-between items-center border-b border-border-beige/50 pb-3">
+              <h3 className="font-serif font-bold text-lg text-text-main">
+                호칭 비교 결과
+              </h3>
+              <button 
                 onClick={() => { setSelected(null); setCompareId(null); }}
+                className="text-text-sub hover:text-text-main p-1.5 rounded-lg hover:bg-background transition-colors text-sm font-semibold"
               >
-                선택 해제
+                닫기
               </button>
             </div>
-          ) : (
-            <div className="space-y-6 w-full">
+
+            <div className="space-y-6">
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-                <div className="bg-background border border-border-beige rounded-2xl p-4 text-center flex-1 max-w-[240px] w-full">
-                  <p className="text-xs text-text-sub font-semibold mb-1">{findById(compareId)?.name} ➜ {selected.name}</p>
+                {/* Card A (Compare Target) */}
+                <div className="bg-background border border-border-beige rounded-2xl p-5 text-center flex-1 w-full flex flex-col items-center gap-3">
+                  {findById(compareId)?.profileImage ? (
+                    <div className="w-20 h-20 rounded-full overflow-hidden border border-border-beige shadow-sm">
+                      <img src={findById(compareId).profileImage} alt={findById(compareId).name} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-2xl font-serif">
+                      {findById(compareId)?.name.charAt(0)}
+                    </div>
+                  )}
+                  <p className="text-xs text-text-sub font-semibold">{findById(compareId)?.name} ➜ {selected.name}</p>
                   <p className="text-2xl font-bold text-primary font-serif">{honorific?.aCallsB}</p>
                 </div>
+
                 <div className="text-2xl text-primary font-bold hidden sm:block">↔</div>
-                <div className="bg-background border border-border-beige rounded-2xl p-4 text-center flex-1 max-w-[240px] w-full">
-                  <p className="text-xs text-text-sub font-semibold mb-1">{selected.name} ➜ {findById(compareId)?.name}</p>
+
+                {/* Card B (Selected) */}
+                <div className="bg-background border border-border-beige rounded-2xl p-5 text-center flex-1 w-full flex flex-col items-center gap-3">
+                  {selected.profileImage ? (
+                    <div className="w-20 h-20 rounded-full overflow-hidden border border-border-beige shadow-sm">
+                      <img src={selected.profileImage} alt={selected.name} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-accent/10 text-accent flex items-center justify-center font-bold text-2xl font-serif">
+                      {selected.name.charAt(0)}
+                    </div>
+                  )}
+                  <p className="text-xs text-text-sub font-semibold">{selected.name} ➜ {findById(compareId)?.name}</p>
                   <p className="text-2xl font-bold text-accent font-serif">{honorific?.bCallsA}</p>
                 </div>
               </div>
-              <p className="text-xs text-text-sub text-center bg-background py-2 px-4 rounded-xl border border-border-beige/50 font-sans">
+
+              <p className="text-xs sm:text-sm text-text-sub text-center bg-background py-2 px-4 rounded-xl border border-border-beige/50 font-sans">
                 🔍 <span className="font-bold text-text-main">관계:</span> {honorific?.relation} | {honorific?.note}
               </p>
-              <div className="flex gap-2 justify-center">
+
+              <div className="flex gap-2 justify-center pt-2">
                 <button
-                  className="bg-primary hover:bg-primary/95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-sm"
+                  className="bg-primary hover:bg-primary/95 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl transition-all shadow-md"
                   onClick={() => navigate(`/search?from=${compareId}&target=${selected.id}`)}
                 >
                   상세 보기 →
                 </button>
                 <button
-                  className="border border-border-beige hover:bg-background text-text-sub text-xs font-bold px-4 py-2.5 rounded-xl transition-all"
+                  className="border border-border-beige hover:bg-background text-text-sub text-xs sm:text-sm font-bold px-5 py-3 rounded-xl transition-all"
                   onClick={() => { setSelected(null); setCompareId(null); }}
                 >
-                  다시 선택
+                  다시 선택하기
                 </button>
               </div>
             </div>
-          )}
+          </div>
         </div>
       )}
 
@@ -285,9 +326,27 @@ function MemberCard({ member, selected, compare, onClick, small }) {
         'border-border-beige hover:border-primary hover:-translate-y-0.5 hover:shadow-sm'
       } ${small ? 'min-w-[68px] p-2' : ''}`}
     >
-      <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm ${initCls} ${small ? 'w-7 h-7 text-xs' : ''}`}>
-        {member.name.charAt(0)}
-      </div>
+      {member.profileImage ? (
+        <div className={`rounded-full overflow-hidden border border-border-beige/50 w-9 h-9 ${small ? 'w-7 h-7' : ''}`}>
+          <img
+            src={member.profileImage}
+            alt={member.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          <div style={{ display: 'none' }} className={`w-full h-full flex items-center justify-center font-bold text-sm ${initCls} ${small ? 'text-xs' : ''}`}>
+            {member.name.charAt(0)}
+          </div>
+        </div>
+      ) : (
+        <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm ${initCls} ${small ? 'w-7 h-7 text-xs' : ''}`}>
+          {member.name.charAt(0)}
+        </div>
+      )}
       <div className="space-y-0.5">
         <p className={`font-serif font-bold text-text-main ${small ? 'text-xs' : 'text-sm'}`}>{member.name}</p>
         <p className="text-[10px] text-text-sub/80">
