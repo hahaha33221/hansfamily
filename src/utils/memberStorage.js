@@ -14,8 +14,8 @@ export function getStoredMembers() {
   }
   try {
     const parsed = JSON.parse(stored);
-    // Check if credentials exist in parsed, otherwise reset to populate them
-    if (parsed.length !== 53 || !parsed[0].username) {
+    // Check if credentials exist and are updated to the simple version (no longer starting with 'hans_')
+    if (parsed.length !== 53 || !parsed[0].username || parsed[0].username.startsWith('hans_')) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(initialMembers));
       return initialMembers;
     }
