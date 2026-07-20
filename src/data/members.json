@@ -19,8 +19,8 @@
     "groupId": "root",
     "note": "조부",
     "profileImage": "/profiles/1 한길상.png",
-    "username": "hans_gilsang",
-    "password": "hans1923"
+    "username": "한길상",
+    "password": "hans"
   },
   {
     "id": "gen1-2",
@@ -42,8 +42,8 @@
     "groupId": "root",
     "note": "조모",
     "profileImage": "/profiles/1-1 박학순.png",
-    "username": "hans_haksun",
-    "password": "hans1926"
+    "username": "박학순",
+    "password": "hans"
   },
   {
     "id": "g1",
@@ -65,8 +65,8 @@
     "groupId": "g1",
     "note": "",
     "profileImage": "/profiles/2 한기남.png",
-    "username": "hans_ginam",
-    "password": "hans1952"
+    "username": "한기남",
+    "password": "hans"
   },
   {
     "id": "g1-sp",
@@ -85,8 +85,8 @@
     "groupId": "g1",
     "note": "한기남 남편",
     "profileImage": "/profiles/2-1 김영상.png",
-    "username": "hans_yeongsang",
-    "password": "hans1947"
+    "username": "김영상",
+    "password": "hans"
   },
   {
     "id": "g2",
@@ -107,8 +107,8 @@
     "groupId": "g2",
     "note": "",
     "profileImage": "/profiles/3 한위수.png",
-    "username": "hans_wisu",
-    "password": "hans1954"
+    "username": "한위수",
+    "password": "hans"
   },
   {
     "id": "g2-sp",
@@ -126,8 +126,8 @@
     "groupId": "g2",
     "note": "",
     "profileImage": "/profiles/3-1 정현숙.png",
-    "username": "hans_hyeonsuk",
-    "password": "hans1234"
+    "username": "정현숙",
+    "password": "hans"
   },
   {
     "id": "g3",
@@ -147,8 +147,8 @@
     "groupId": "g3",
     "note": "",
     "profileImage": "/profiles/4 한옥수.png",
-    "username": "hans_oksu",
-    "password": "hans1957"
+    "username": "한옥수",
+    "password": "hans"
   },
   {
     "id": "g3-sp",
@@ -165,8 +165,8 @@
     "groupId": "g3",
     "note": "",
     "profileImage": "/profiles/4-1 구영순.png",
-    "username": "hans_yeongsun",
-    "password": "hans1961"
+    "username": "구영순",
+    "password": "hans"
   },
   {
     "id": "g4",
@@ -183,8 +183,8 @@
     "groupId": "g4",
     "note": "",
     "profileImage": "/profiles/5 한범윤.png",
-    "username": "hans_beomyun",
-    "password": "hans1961"
+    "username": "한범윤",
+    "password": "hans"
   },
   {
     "id": "g5",
@@ -204,8 +204,8 @@
     "groupId": "g5",
     "note": "",
     "profileImage": "/profiles/6 한필점.png",
-    "username": "hans_piljeom",
-    "password": "hans1963"
+    "username": "한필점",
+    "password": "hans"
   },
   {
     "id": "g5-sp",
@@ -222,8 +222,8 @@
     "groupId": "g5",
     "note": "",
     "profileImage": "/profiles/6-1 이점호.png",
-    "username": "hans_jeomho",
-    "password": "hans1958"
+    "username": "이점호",
+    "password": "hans"
   },
   {
     "id": "g6",
@@ -243,8 +243,8 @@
     "groupId": "g6",
     "note": "",
     "profileImage": "/profiles/7 한정숙.png",
-    "username": "hans_jeongsuk",
-    "password": "hans1965"
+    "username": "한정숙",
+    "password": "hans"
   },
   {
     "id": "g6-sp",
@@ -261,8 +261,8 @@
     "groupId": "g6",
     "note": "",
     "profileImage": "/profiles/7-1 설재현.png",
-    "username": "hans_jaehyeon",
-    "password": "hans1965"
+    "username": "설재현",
+    "password": "hans"
   },
   {
     "id": "g7",
@@ -282,8 +282,8 @@
     "groupId": "g7",
     "note": "",
     "profileImage": "/profiles/8 한영수.png",
-    "username": "hans_yeongsu",
-    "password": "hans1967"
+    "username": "한영수",
+    "password": "hans"
   },
   {
     "id": "g7-sp",
@@ -300,8 +300,8 @@
     "groupId": "g7",
     "note": "",
     "profileImage": "/profiles/8-1 양순옥.png",
-    "username": "hans_sunok",
-    "password": "hans1967"
+    "username": "양순옥",
+    "password": "hans"
   },
   {
     "id": "c1",
@@ -321,8 +321,8 @@
     "groupId": "g1",
     "note": "",
     "profileImage": "/profiles/9 김은희.png",
-    "username": "hans_eunhui",
-    "password": "hans1973"
+    "username": "김은희",
+    "password": "hans"
   },
   {
     "id": "c1-sp",
@@ -339,8 +339,8 @@
     "groupId": "g1",
     "note": "김은희 남편",
     "profileImage": "/profiles/9-1 오명종.png",
-    "username": "hans_myeongjong",
-    "password": "hans1970"
+    "username": "오명종",
+    "password": "hans"
   },
   {
     "id": "c2",
@@ -360,8 +360,8 @@
     "groupId": "g1",
     "note": "",
     "profileImage": "/profiles/10 김지현.png",
-    "username": "hans_jihyeon",
-    "password": "hans1975"
+    "username": "김지현",
+    "password": "hans"
   },
   {
     "id": "c2-sp",
@@ -378,8 +378,8 @@
     "groupId": "g1",
     "note": "김지현 남편",
     "profileImage": "/profiles/10-1 권용하.png",
-    "username": "hans_yongha",
-    "password": "hans1972"
+    "username": "권용하",
+    "password": "hans"
   },
   {
     "id": "c3",
@@ -398,8 +398,8 @@
     "groupId": "g1",
     "note": "1981동갑서열1",
     "profileImage": "/profiles/11 김봉만.png",
-    "username": "hans_bongman",
-    "password": "hans1981"
+    "username": "김봉만",
+    "password": "hans"
   },
   {
     "id": "c3-sp",
@@ -415,8 +415,8 @@
     "groupId": "g1",
     "note": "김봉만 처",
     "profileImage": "/profiles/11-1 이민경.png",
-    "username": "hans_mingyeong",
-    "password": "hans1984"
+    "username": "이민경",
+    "password": "hans"
   },
   {
     "id": "c4",
@@ -436,8 +436,8 @@
     "groupId": "g1",
     "note": "1981동갑서열2",
     "profileImage": "/profiles/12 김흥만.png",
-    "username": "hans_heungman",
-    "password": "hans1981"
+    "username": "김흥만",
+    "password": "hans"
   },
   {
     "id": "c4-sp",
@@ -454,8 +454,8 @@
     "groupId": "g1",
     "note": "김흥만 처",
     "profileImage": "/profiles/12-1 추가희.png",
-    "username": "hans_gahee",
-    "password": "hans1981"
+    "username": "추가희",
+    "password": "hans"
   },
   {
     "id": "c5",
@@ -474,8 +474,8 @@
     "groupId": "g2",
     "note": "1981동갑서열3",
     "profileImage": "/profiles/13 한창신.png",
-    "username": "hans_changshin",
-    "password": "hans1981"
+    "username": "한창신",
+    "password": "hans"
   },
   {
     "id": "c5-sp",
@@ -491,8 +491,8 @@
     "groupId": "g2",
     "note": "한창신 처",
     "profileImage": "/profiles/13-1 변영숙.png",
-    "username": "hans_youngsuk",
-    "password": "hans1981"
+    "username": "변영숙",
+    "password": "hans"
   },
   {
     "id": "c6",
@@ -509,8 +509,8 @@
     "groupId": "g2",
     "note": "",
     "profileImage": "/profiles/14 한성임.png",
-    "username": "hans_seongim",
-    "password": "hans1984"
+    "username": "한성임",
+    "password": "hans"
   },
   {
     "id": "c6-sp",
@@ -524,8 +524,8 @@
     "groupId": "g2",
     "note": "한성임 남편",
     "profileImage": "/profiles/14-1 조중훈.png",
-    "username": "hans_junghun",
-    "password": "hans1977"
+    "username": "조중훈",
+    "password": "hans"
   },
   {
     "id": "c7",
@@ -545,8 +545,8 @@
     "groupId": "g2",
     "note": "",
     "profileImage": "/profiles/15 한승혁.png",
-    "username": "hans_seunghyeok",
-    "password": "hans1985"
+    "username": "한승혁",
+    "password": "hans"
   },
   {
     "id": "c7-sp",
@@ -563,8 +563,8 @@
     "groupId": "g2",
     "note": "한승혁 처",
     "profileImage": "/profiles/15-1 양인경.png",
-    "username": "hans_inkyeong",
-    "password": "hans1989"
+    "username": "양인경",
+    "password": "hans"
   },
   {
     "id": "c8",
@@ -583,8 +583,8 @@
     "groupId": "g3",
     "note": "",
     "profileImage": "/profiles/16 한현주.png",
-    "username": "hans_hyeonju",
-    "password": "hans1987"
+    "username": "한현주",
+    "password": "hans"
   },
   {
     "id": "c8-sp",
@@ -600,8 +600,8 @@
     "groupId": "g3",
     "note": "한현주 남편",
     "profileImage": "/profiles/16-1 이종석.png",
-    "username": "hans_jongseok",
-    "password": "hans1983"
+    "username": "이종석",
+    "password": "hans"
   },
   {
     "id": "c9",
@@ -618,8 +618,8 @@
     "groupId": "g5",
     "note": "",
     "profileImage": "/profiles/17 이재호.png",
-    "username": "hans_jaeho",
-    "password": "hans1990"
+    "username": "이재호",
+    "password": "hans"
   },
   {
     "id": "c10",
@@ -636,8 +636,8 @@
     "groupId": "g6",
     "note": "",
     "profileImage": "/profiles/18 설영은.png",
-    "username": "hans_yeongeun",
-    "password": "hans1992"
+    "username": "설영은",
+    "password": "hans"
   },
   {
     "id": "c10-sp",
@@ -651,8 +651,8 @@
     "groupId": "g6",
     "note": "설영은 남편",
     "profileImage": "/profiles/18-1 김도현.png",
-    "username": "hans_dohyeon",
-    "password": "hans1992"
+    "username": "김도현",
+    "password": "hans"
   },
   {
     "id": "c11",
@@ -669,8 +669,8 @@
     "groupId": "g3",
     "note": "",
     "profileImage": "/profiles/19 한성주.png",
-    "username": "hans_seongju",
-    "password": "hans1993"
+    "username": "한성주",
+    "password": "hans"
   },
   {
     "id": "c12",
@@ -687,8 +687,8 @@
     "groupId": "g7",
     "note": "1994동갑서열2",
     "profileImage": "/profiles/21 한석환.png",
-    "username": "hans_seokhwan",
-    "password": "hans1994"
+    "username": "한석환",
+    "password": "hans"
   },
   {
     "id": "c12-sp",
@@ -702,8 +702,8 @@
     "groupId": "g7",
     "note": "한석환 처",
     "profileImage": "/profiles/21-1 오수현.png",
-    "username": "hans_suhyeon",
-    "password": "hans1995"
+    "username": "오수현",
+    "password": "hans"
   },
   {
     "id": "c13",
@@ -720,8 +720,8 @@
     "groupId": "g5",
     "note": "1994동갑서열1",
     "profileImage": "/profiles/20 이수경.png",
-    "username": "hans_sukyeong",
-    "password": "hans1994"
+    "username": "이수경",
+    "password": "hans"
   },
   {
     "id": "c14",
@@ -740,8 +740,8 @@
     "groupId": "g7",
     "note": "",
     "profileImage": "/profiles/22 한석란.png",
-    "username": "hans_seokran",
-    "password": "hans1996"
+    "username": "한석란",
+    "password": "hans"
   },
   {
     "id": "c14-sp",
@@ -757,8 +757,8 @@
     "groupId": "g7",
     "note": "한석란 남편",
     "profileImage": "/profiles/22-1 홍지석.png",
-    "username": "hans_jiseok",
-    "password": "hans1992"
+    "username": "홍지석",
+    "password": "hans"
   },
   {
     "id": "c15",
@@ -775,8 +775,8 @@
     "groupId": "g6",
     "note": "",
     "profileImage": "/profiles/23 설찬우.png",
-    "username": "hans_chanwoo",
-    "password": "hans1997"
+    "username": "설찬우",
+    "password": "hans"
   },
   {
     "id": "d1",
@@ -793,8 +793,8 @@
     "groupId": "g1",
     "note": "2006동갑서열1",
     "profileImage": "/profiles/25 오지수.png",
-    "username": "hans_jisu",
-    "password": "hans2006"
+    "username": "오지수",
+    "password": "hans"
   },
   {
     "id": "d2",
@@ -811,8 +811,8 @@
     "groupId": "g1",
     "note": "2012동갑서열1",
     "profileImage": "/profiles/27 오지훈.png",
-    "username": "hans_jihun",
-    "password": "hans2012"
+    "username": "오지훈",
+    "password": "hans"
   },
   {
     "id": "d3",
@@ -829,8 +829,8 @@
     "groupId": "g1",
     "note": "",
     "profileImage": "/profiles/24 권다현.png",
-    "username": "hans_dahyeon",
-    "password": "hans2000"
+    "username": "권다현",
+    "password": "hans"
   },
   {
     "id": "d4",
@@ -847,8 +847,8 @@
     "groupId": "g1",
     "note": "2006동갑서열2",
     "profileImage": "/profiles/26 권민수.png",
-    "username": "hans_minsu",
-    "password": "hans2006"
+    "username": "권민수",
+    "password": "hans"
   },
   {
     "id": "d5",
@@ -865,8 +865,8 @@
     "groupId": "g1",
     "note": "2012동갑서열2",
     "profileImage": "/profiles/28 김리원.png",
-    "username": "hans_riwon",
-    "password": "hans2012"
+    "username": "김리원",
+    "password": "hans"
   },
   {
     "id": "d6",
@@ -883,8 +883,8 @@
     "groupId": "g2",
     "note": "2012동갑서열3",
     "profileImage": "/profiles/29 한지운.png",
-    "username": "hans_jiwoon",
-    "password": "hans2012"
+    "username": "한지운",
+    "password": "hans"
   },
   {
     "id": "d7",
@@ -901,8 +901,8 @@
     "groupId": "g1",
     "note": "",
     "profileImage": "/profiles/31 김태완.png",
-    "username": "hans_taewan",
-    "password": "hans2019"
+    "username": "김태완",
+    "password": "hans"
   },
   {
     "id": "d8",
@@ -919,8 +919,8 @@
     "groupId": "g2",
     "note": "",
     "profileImage": "/profiles/30 한지유.png",
-    "username": "hans_jiyu",
-    "password": "hans2018"
+    "username": "한지유",
+    "password": "hans"
   },
   {
     "id": "d9",
@@ -937,8 +937,8 @@
     "groupId": "g2",
     "note": "2020동갑서열1",
     "profileImage": "/profiles/32 한정운.png",
-    "username": "hans_jeongwoon",
-    "password": "hans2020"
+    "username": "한정운",
+    "password": "hans"
   },
   {
     "id": "d10",
@@ -955,8 +955,8 @@
     "groupId": "g3",
     "note": "2020동갑서열2",
     "profileImage": "/profiles/33 이승윤.png",
-    "username": "hans_seungyun",
-    "password": "hans2020"
+    "username": "이승윤",
+    "password": "hans"
   },
   {
     "id": "d11",
@@ -973,8 +973,8 @@
     "groupId": "g1",
     "note": "",
     "profileImage": "/profiles/34 김동우.png",
-    "username": "hans_dongwoo",
-    "password": "hans2023"
+    "username": "김동우",
+    "password": "hans"
   },
   {
     "id": "d12",
@@ -991,7 +991,7 @@
     "groupId": "g7",
     "note": "영아",
     "profileImage": "/profiles/35 홍서아.png",
-    "username": "hans_seoa",
-    "password": "hans2026"
+    "username": "홍서아",
+    "password": "hans"
   }
 ]

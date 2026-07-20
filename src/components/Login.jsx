@@ -53,7 +53,7 @@ export default function Login({ members, onLoginSuccess }) {
                 </span>
                 <input
                   type="text"
-                  placeholder="예: hans_gilsang"
+                  placeholder="예: 한길상"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full bg-background border border-border-beige rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main placeholder-text-sub text-sm"
@@ -73,7 +73,7 @@ export default function Login({ members, onLoginSuccess }) {
                 </span>
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="비밀번호 입력"
+                  placeholder="비밀번호 입력 (hans)"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-background border border-border-beige rounded-xl pl-10 pr-12 py-3 focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main placeholder-text-sub text-sm"
@@ -109,8 +109,8 @@ export default function Login({ members, onLoginSuccess }) {
 
         <div className="text-center border-t border-border-beige/50 pt-4 mt-6">
           <p className="text-[11px] text-text-sub">
-            💡 아이디와 패스워드는 <span className="font-semibold">hans_이름영문</span> 및 <span className="font-semibold">hans생년월일(4자리)</span>로 초기 설정되어 있습니다.<br />
-            (예: 한길상 ➡️ ID: <code className="bg-background px-1 py-0.5 rounded font-mono">hans_gilsang</code> / PW: <code className="bg-background px-1 py-0.5 rounded font-mono">hans1923</code>)
+            💡 아이디는 본인의 <span className="font-semibold">한글 이름</span>이며, 비밀번호는 공통으로 <span className="font-semibold">hans</span> 입니다.<br />
+            (예: 한길상 ➡️ ID: <code className="bg-background px-1 py-0.5 rounded font-mono">한길상</code> / PW: <code className="bg-background px-1 py-0.5 rounded font-mono">hans</code>)
           </p>
         </div>
       </div>
