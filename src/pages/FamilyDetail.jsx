@@ -1,17 +1,22 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, User, Heart, Star, Sparkles, MessageCircle, Camera, Check, AlertCircle } from 'lucide-react';
-import { getStoredMembers, saveStoredMembers } from '../utils/memberStorage';
 import { getHonorific } from '../utils/getHonorific';
+import { API_URL } from '../config';
 
-export default function FamilyDetail({ currentUser, onUpdateUser }) {
+export default function FamilyDetail({ currentUser, membersList: initialMembersList, onUpdateUser }) {
   const { id } = useParams();
   const navigate = useNavigate();
   
   // Track dynamically loaded state for updates
-  const [membersList, setMembersList] = useState(() => getStoredMembers());
+  const [membersList, setMembersList] = useState(initialMembersList);
   const [meId, setMeId] = useState('');
   const [imageError, setImageError] = useState('');
+
+  // Sync state with props
+  useEffect(() => {
+    setMembersList(initialMembersList);
+  }, [initialMembersList]);
 
   // Find the selected member from state
   const member = membersList.find((m) => m.id === id);
@@ -59,36 +64,47 @@ export default function FamilyDetail({ currentUser, onUpdateUser }) {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Check file size (limit to 2MB for localStorage)
+    // Check file size (limit to 2MB)
     if (file.size > 2 * 1024 * 1024) {
       setImageError('이미지 크기는 2MB 이하여야 합니다.');
       return;
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => {
+    reader.onloadend = async () => {
       const base64String = reader.result;
       
-      // Update local storage and component states
-      const updatedMembers = membersList.map((m) => {
-        if (m.id === member.id) {
-          return { ...m, profileImage: base64String };
-        }
-        return m;
-      });
+      const updatedMember = { ...member, profileImage: base64String };
 
       try {
-        saveStoredMembers(updatedMembers);
+        const response = await fetch(`${API_URL}/api/members/${member.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedMember),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update profile image on server');
+        }
+
+        const updatedMembers = membersList.map((m) => {
+          if (m.id === member.id) {
+            return updatedMember;
+          }
+          return m;
+        });
+
         setMembersList(updatedMembers);
         setImageError('');
         
-        // Notify App.jsx about the user profile change if it is the current user's profile
-        if (isOwnProfile && onUpdateUser) {
-          const updatedSelf = updatedMembers.find((m) => m.id === member.id);
-          onUpdateUser(updatedSelf);
+        // Notify App.jsx about the user profile change
+        if (onUpdateUser) {
+          onUpdateUser(updatedMember);
         }
       } catch (err) {
-        setImageError('로컬 저장 공간 부족으로 프로필 이미지를 저장할 수 없습니다.');
+        setImageError('프로필 이미지를 저장할 수 없습니다.');
         console.error(err);
       }
     };

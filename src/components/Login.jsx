@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LogIn, User, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { API_URL } from '../config';
 
 export default function Login({ members, onLoginSuccess }) {
   const [username, setUsername] = useState('');
@@ -7,7 +8,7 @@ export default function Login({ members, onLoginSuccess }) {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -16,14 +17,28 @@ export default function Login({ members, onLoginSuccess }) {
       return;
     }
 
-    const foundMember = members.find(
-      (m) => m.username === username.trim() && m.password === password.trim()
-    );
+    try {
+      const response = await fetch(`${API_URL}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username.trim(),
+          password: password.trim(),
+        }),
+      });
 
-    if (foundMember) {
-      onLoginSuccess(foundMember);
-    } else {
-      setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+      const data = await response.json();
+
+      if (response.ok) {
+        onLoginSuccess(data.user);
+      } else {
+        setError(data.message || '로그인에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('서버와 통신할 수 없습니다.');
     }
   };
 
@@ -107,12 +122,7 @@ export default function Login({ members, onLoginSuccess }) {
           </div>
         </form>
 
-        <div className="text-center border-t border-border-beige/50 pt-4 mt-6">
-          <p className="text-[11px] text-text-sub">
-            💡 아이디는 본인의 <span className="font-semibold">한글 이름</span>이며, 비밀번호는 공통으로 <span className="font-semibold">hans</span> 입니다.<br />
-            (예: 한길상 ➡️ ID: <code className="bg-background px-1 py-0.5 rounded font-mono">한길상</code> / PW: <code className="bg-background px-1 py-0.5 rounded font-mono">hans</code>)
-          </p>
-        </div>
+
       </div>
     </div>
   );

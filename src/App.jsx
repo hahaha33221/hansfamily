@@ -9,33 +9,49 @@ import HonorificsGuide from './pages/HonorificsGuide';
 import OrgChart from './pages/OrgChart';
 import Admin from './pages/Admin';
 import Login from './components/Login';
-import { getStoredMembers } from './utils/memberStorage';
+import { API_URL } from './config';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadedMembers = getStoredMembers();
-    setMembers(loadedMembers);
-
-    const savedUser = localStorage.getItem('hansfamily_current_user');
-    if (savedUser) {
-      try {
-        const parsedUser = JSON.parse(savedUser);
-        // Find the freshest member data in case profile picture was changed
-        const freshUser = loadedMembers.find(m => m.id === parsedUser.id);
-        if (freshUser) {
-          setCurrentUser(freshUser);
-        } else {
-          setCurrentUser(parsedUser);
-        }
-      } catch (e) {
-        console.error('Failed to parse current user', e);
+  const fetchMembers = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/members`);
+      if (res.ok) {
+        const data = await res.json();
+        setMembers(data);
+        return data;
       }
+    } catch (err) {
+      console.error('Failed to fetch members:', err);
     }
-    setLoading(false);
+    return [];
+  };
+
+  useEffect(() => {
+    const initApp = async () => {
+      const loadedMembers = await fetchMembers();
+      
+      const savedUser = localStorage.getItem('hansfamily_current_user');
+      if (savedUser) {
+        try {
+          const parsedUser = JSON.parse(savedUser);
+          const freshUser = loadedMembers.find(m => m.id === parsedUser.id);
+          if (freshUser) {
+            setCurrentUser(freshUser);
+          } else {
+            setCurrentUser(parsedUser);
+          }
+        } catch (e) {
+          console.error('Failed to parse current user', e);
+        }
+      }
+      setLoading(false);
+    };
+
+    initApp();
   }, []);
 
   const handleLoginSuccess = (user) => {
@@ -48,11 +64,11 @@ export default function App() {
     localStorage.removeItem('hansfamily_current_user');
   };
 
-  const handleUpdateUser = (updatedUser) => {
+  const handleUpdateUser = async (updatedUser) => {
     setCurrentUser(updatedUser);
     localStorage.setItem('hansfamily_current_user', JSON.stringify(updatedUser));
     // Refresh members list
-    setMembers(getStoredMembers());
+    await fetchMembers();
   };
 
   if (loading) {
@@ -84,7 +100,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/family" element={<FamilyList />} />
-            <Route path="/family/:id" element={<FamilyDetail currentUser={currentUser} onUpdateUser={handleUpdateUser} />} />
+            <Route path="/family/:id" element={<FamilyDetail currentUser={currentUser} membersList={members} onUpdateUser={handleUpdateUser} />} />
             <Route path="/search" element={<HonorificsSearch />} />
             <Route path="/guide" element={<HonorificsGuide />} />
             <Route path="/orgchart" element={<OrgChart />} />

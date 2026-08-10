@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LogIn, LogOut, Plus, Edit2, Trash2, Download, Save, X, Lock, Check } from 'lucide-react';
-import { getStoredMembers, saveStoredMembers } from '../utils/memberStorage';
+import { API_URL } from '../config';
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,7 +11,7 @@ export default function Admin() {
   // Modal/Form States
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState(null); // null means adding
-  
+
   // Form Fields
   const [name, setName] = useState('');
   const [gender, setGender] = useState('male');
@@ -22,21 +22,51 @@ export default function Admin() {
   const [childIds, setChildIds] = useState([]);
   const [note, setNote] = useState('');
 
+  const fetchMembers = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/members`);
+      if (res.ok) {
+        const data = await res.json();
+        setMembers(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch members for admin:', err);
+    }
+  };
+
+  const syncMembers = async (updatedList) => {
+    try {
+      const response = await fetch(`${API_URL}/api/members/sync`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedList),
+      });
+      if (!response.ok) {
+        throw new Error('Sync failed');
+      }
+    } catch (err) {
+      console.error('Failed to sync members with server:', err);
+      alert('서버 저장에 실패했습니다. 네트워크 상태를 확인해주세요.');
+    }
+  };
+
   // Authentication check
   useEffect(() => {
     const isLogged = localStorage.getItem('hansfamily_admin_logged_in');
     if (isLogged === 'true') {
       setIsAuthenticated(true);
-      setMembers(getStoredMembers());
+      fetchMembers();
     }
   }, []);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (password === 'hans1234') {
       setIsAuthenticated(true);
       localStorage.setItem('hansfamily_admin_logged_in', 'true');
-      setMembers(getStoredMembers());
+      await fetchMembers();
       setError('');
     } else {
       setError('비밀번호가 올바르지 않습니다.');
@@ -147,7 +177,7 @@ export default function Admin() {
     }
 
     setMembers(updatedMembers);
-    saveStoredMembers(updatedMembers);
+    syncMembers(updatedMembers);
     setIsModalOpen(false);
   };
 
@@ -170,7 +200,7 @@ export default function Admin() {
       });
 
       setMembers(updatedMembers);
-      saveStoredMembers(updatedMembers);
+      syncMembers(updatedMembers);
     }
   };
 
