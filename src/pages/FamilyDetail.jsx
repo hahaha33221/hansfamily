@@ -72,9 +72,9 @@ export default function FamilyDetail({ currentUser, membersList: initialMembersL
     const file = e.target.files[0];
     if (!file) return;
 
-    // Check file size (limit to 2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      setImageError('이미지 크기는 2MB 이하여야 합니다.');
+    // Check file size (limit to 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      setImageError('이미지 크기는 10MB 이하여야 합니다.');
       return;
     }
 
