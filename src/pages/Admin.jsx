@@ -7,6 +7,8 @@ export default function Admin() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [members, setMembers] = useState([]);
+  const [activeTab, setActiveTab] = useState('members'); // 'members' or 'accounts'
+
   
   // Modal/Form States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -289,89 +291,188 @@ export default function Admin() {
         </div>
       </div>
 
-      {/* Main Members Grid/Table */}
-      <div className="bg-white border border-border-beige rounded-3xl shadow-sm overflow-hidden">
-        {/* Desktop Table */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full text-left text-sm border-collapse">
-            <thead>
-              <tr className="bg-secondary/20 text-text-main border-b border-border-beige font-serif">
-                <th className="p-4">이름</th>
-                <th className="p-4">성별</th>
-                <th className="p-4">출생년도</th>
-                <th className="p-4">구분</th>
-                <th className="p-4">배우자</th>
-                <th className="p-4 text-center">동작</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-beige">
-              {members.map((m) => (
-                <tr key={m.id} className="hover:bg-background/40 transition-colors">
-                  <td className="p-4 font-bold text-text-main">{m.name}</td>
-                  <td className="p-4 text-text-sub">{m.gender === 'male' ? '남성' : m.gender === 'female' ? '여성' : '미확정'}</td>
-                  <td className="p-4 text-text-sub">{m.birthYear ? `${m.birthYear}년생` : '-'}</td>
-                  <td className="p-4 text-text-sub">
-                    {m.category === 'generation1' ? '1세대 조부모' : m.category === 'generation2' ? '2세대 직계' : m.category === 'generation3' ? '3세대 사촌' : m.category === 'generation4' ? '4세대 자녀' : '배우자'}
-                  </td>
-                  <td className="p-4 text-text-sub">{getSpouseName(m.spouseId)}</td>
-                  <td className="p-4">
-                    <div className="flex justify-center space-x-2">
-                      <button
-                        onClick={() => openEditModal(m)}
-                        className="p-1.5 border border-border-beige hover:border-primary text-text-sub hover:text-primary rounded-lg transition-colors"
-                        title="수정"
-                      >
-                        <Edit2 size={15} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(m.id)}
-                        className="p-1.5 border border-red-100 hover:border-red-400 text-red-400 hover:text-red-600 rounded-lg transition-colors"
-                        title="삭제"
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {/* Tab Navigation */}
+      <div className="flex border-b border-border-beige space-x-6 px-2">
+        <button
+          onClick={() => setActiveTab('members')}
+          className={`pb-3 text-sm font-semibold transition-all duration-200 border-b-2 ${
+            activeTab === 'members'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-text-sub hover:text-text-main'
+          }`}
+        >
+          구성원 관계 관리
+        </button>
+        <button
+          onClick={() => setActiveTab('accounts')}
+          className={`pb-3 text-sm font-semibold transition-all duration-200 border-b-2 ${
+            activeTab === 'accounts'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-text-sub hover:text-text-main'
+          }`}
+        >
+          로그인 계정 관리
+        </button>
+      </div>
 
-        {/* Mobile List Cards */}
-        <div className="block md:hidden divide-y divide-border-beige">
-          {members.map((m) => (
-            <div key={m.id} className="p-4 flex justify-between items-center hover:bg-background/25">
-              <div className="space-y-0.5">
-                <div className="flex items-center space-x-1.5">
-                  <span className="font-bold text-text-main">{m.name}</span>
-                  <span className="text-[10px] bg-secondary/50 text-accent px-2 py-0.5 rounded-full font-semibold">
-                    {m.category === 'generation1' ? '1세대' : m.category === 'generation2' ? '2세대' : m.category === 'generation3' ? '3세대' : m.category === 'generation4' ? '4세대' : '배우자'}
-                  </span>
-                </div>
-                <div className="text-xs text-text-sub font-medium">
-                  {m.gender === 'male' ? '남성' : m.gender === 'female' ? '여성' : '미정'}
-                  {m.birthYear ? ` | ${m.birthYear}년생` : ''}
-                  {m.spouseId ? ` | 배우자: ${getSpouseName(m.spouseId)}` : ''}
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => openEditModal(m)}
-                  className="p-2 border border-border-beige text-text-sub hover:text-primary rounded-xl"
-                >
-                  <Edit2 size={16} />
-                </button>
-                <button
-                  onClick={() => handleDelete(m.id)}
-                  className="p-2 border border-red-100 text-red-500 hover:bg-red-50 rounded-xl"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
+      {/* Main Grid/Table depending on Tab */}
+      <div className="bg-white border border-border-beige rounded-3xl shadow-sm overflow-hidden">
+        {activeTab === 'members' ? (
+          <>
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-sm border-collapse">
+                <thead>
+                  <tr className="bg-secondary/20 text-text-main border-b border-border-beige font-serif">
+                    <th className="p-4">이름</th>
+                    <th className="p-4">성별</th>
+                    <th className="p-4">출생년도</th>
+                    <th className="p-4">구분</th>
+                    <th className="p-4">배우자</th>
+                    <th className="p-4 text-center">동작</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-beige">
+                  {members.map((m) => (
+                    <tr key={m.id} className="hover:bg-background/40 transition-colors">
+                      <td className="p-4 font-bold text-text-main">{m.name}</td>
+                      <td className="p-4 text-text-sub">{m.gender === 'male' ? '남성' : m.gender === 'female' ? '여성' : '미확정'}</td>
+                      <td className="p-4 text-text-sub">{m.birthYear ? `${m.birthYear}년생` : '-'}</td>
+                      <td className="p-4 text-text-sub">
+                        {m.category === 'generation1' ? '1세대 조부모' : m.category === 'generation2' ? '2세대 직계' : m.category === 'generation3' ? '3세대 사촌' : m.category === 'generation4' ? '4세대 자녀' : '배우자'}
+                      </td>
+                      <td className="p-4 text-text-sub">{getSpouseName(m.spouseId)}</td>
+                      <td className="p-4">
+                        <div className="flex justify-center space-x-2">
+                          <button
+                            onClick={() => openEditModal(m)}
+                            className="p-1.5 border border-border-beige hover:border-primary text-text-sub hover:text-primary rounded-lg transition-colors"
+                            title="수정"
+                          >
+                            <Edit2 size={15} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(m.id)}
+                            className="p-1.5 border border-red-100 hover:border-red-400 text-red-400 hover:text-red-600 rounded-lg transition-colors"
+                            title="삭제"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          ))}
-        </div>
+
+            {/* Mobile List Cards */}
+            <div className="block md:hidden divide-y divide-border-beige">
+              {members.map((m) => (
+                <div key={m.id} className="p-4 flex justify-between items-center hover:bg-background/25">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center space-x-1.5">
+                      <span className="font-bold text-text-main">{m.name}</span>
+                      <span className="text-[10px] bg-secondary/50 text-accent px-2 py-0.5 rounded-full font-semibold">
+                        {m.category === 'generation1' ? '1세대' : m.category === 'generation2' ? '2세대' : m.category === 'generation3' ? '3세대' : m.category === 'generation4' ? '4세대' : '배우자'}
+                      </span>
+                    </div>
+                    <div className="text-xs text-text-sub font-medium">
+                      {m.gender === 'male' ? '남성' : m.gender === 'female' ? '여성' : '미정'}
+                      {m.birthYear ? ` | ${m.birthYear}년생` : ''}
+                      {m.spouseId ? ` | 배우자: ${getSpouseName(m.spouseId)}` : ''}
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => openEditModal(m)}
+                      className="p-2 border border-border-beige text-text-sub hover:text-primary rounded-xl"
+                    >
+                      <Edit2 size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(m.id)}
+                      className="p-2 border border-red-100 text-red-500 hover:bg-red-50 rounded-xl"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          /* Accounts management tab */
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr className="bg-secondary/20 text-text-main border-b border-border-beige font-serif">
+                  <th className="p-4">이름</th>
+                  <th className="p-4">아이디 (ID / 성명)</th>
+                  <th className="p-4">비밀번호 (Password)</th>
+                  <th className="p-4 text-center">동작</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border-beige">
+                {members.sort((a,b) => a.name.localeCompare(b.name, 'ko')).map((m) => (
+                  <tr key={m.id} className="hover:bg-background/40 transition-colors">
+                    <td className="p-4 font-bold text-text-main">{m.name}</td>
+                    <td className="p-4">
+                      <input
+                        type="text"
+                        value={m.username || ''}
+                        onChange={(e) => {
+                          const updated = members.map(x => x.id === m.id ? { ...x, username: e.target.value } : x);
+                          setMembers(updated);
+                        }}
+                        placeholder="아이디 설정"
+                        className="bg-background border border-border-beige rounded-xl px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main w-full max-w-[180px]"
+                      />
+                    </td>
+                    <td className="p-4">
+                      <input
+                        type="text"
+                        value={m.password || ''}
+                        onChange={(e) => {
+                          const updated = members.map(x => x.id === m.id ? { ...x, password: e.target.value } : x);
+                          setMembers(updated);
+                        }}
+                        placeholder="비밀번호 설정"
+                        className="bg-background border border-border-beige rounded-xl px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main w-full max-w-[180px]"
+                      />
+                    </td>
+                    <td className="p-4 text-center">
+                      <div className="flex justify-center space-x-2">
+                        <button
+                          onClick={() => {
+                            if (window.confirm(`${m.name}님의 비밀번호를 '1234'로 초기화하시겠습니까?`)) {
+                              const updated = members.map(x => x.id === m.id ? { ...x, password: '1234' } : x);
+                              setMembers(updated);
+                              syncMembers(updated);
+                              alert(`${m.name}님의 비밀번호가 '1234'로 변경/초기화 되었습니다.`);
+                            }
+                          }}
+                          className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-semibold rounded-xl transition-all duration-200"
+                        >
+                          1234로 초기화
+                        </button>
+                        <button
+                          onClick={() => {
+                            syncMembers(members);
+                            alert(`${m.name}님의 계정 정보가 저장되었습니다.`);
+                          }}
+                          className="px-3 py-1.5 bg-primary hover:bg-primary/95 text-white text-xs font-semibold rounded-xl transition-all duration-200 shadow-sm"
+                        >
+                          저장
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* Edit/Add Slide Modal */}

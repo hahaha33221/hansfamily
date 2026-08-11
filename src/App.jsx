@@ -16,15 +16,20 @@ export default function App() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   const fetchMembers = async () => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
     try {
-      const res = await fetch(`${API_URL}/api/members`);
+      const res = await fetch(`${API_URL}/api/members`, { signal: controller.signal });
+      clearTimeout(timeoutId);
       if (res.ok) {
         const data = await res.json();
         setMembers(data);
         return data;
       }
     } catch (err) {
+      clearTimeout(timeoutId);
       console.error('Failed to fetch members:', err);
     }
     return [];

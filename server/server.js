@@ -108,6 +108,43 @@ app.put('/api/members/:id', async (req, res) => {
   }
 });
 
+// 3-1. Change password
+app.post('/api/members/:id/change-password', async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  if (!password || password.trim() === '' || password.trim() === '1234') {
+    return res.status(400).json({ message: '올바른 비밀번호를 입력해주세요. (1234 제외)' });
+  }
+
+  try {
+    const connection = await getDbConnection();
+    await connection.query(
+      'UPDATE members SET password = ? WHERE id = ?',
+      [password.trim(), id]
+    );
+    
+    // Get updated user details to return
+    const [rows] = await connection.query('SELECT * FROM members WHERE id = ?', [id]);
+    await connection.end();
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
+    }
+
+    const member = {
+      ...rows[0],
+      parentIds: typeof rows[0].parentIds === 'string' ? JSON.parse(rows[0].parentIds) : (rows[0].parentIds || []),
+      childIds: typeof rows[0].childIds === 'string' ? JSON.parse(rows[0].childIds) : (rows[0].childIds || [])
+    };
+
+    res.json({ message: '비밀번호가 변경되었습니다.', user: member });
+  } catch (err) {
+    console.error('Error changing password:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 4. Create new member (Admin)
 app.post('/api/members', async (req, res) => {
   const member = req.body;
