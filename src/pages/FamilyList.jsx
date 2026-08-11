@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Heart } from 'lucide-react';
 import { getStoredMembers } from '../utils/memberStorage';
 
-export default function FamilyList() {
+export default function FamilyList({ membersList }) {
   const navigate = useNavigate();
-  const membersData = useMemo(() => getStoredMembers(), []);
+  const membersData = useMemo(() => {
+    return (membersList && membersList.length > 0) ? membersList : getStoredMembers();
+  }, [membersList]);
   const [activeTab, setActiveTab] = useState('all');
 
   const [searchTerm, setSearchTerm] = useState('');

@@ -104,7 +104,7 @@ export default function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/family" element={<FamilyList />} />
+            <Route path="/family" element={<FamilyList membersList={members} />} />
             <Route path="/family/:id" element={<FamilyDetail currentUser={currentUser} membersList={members} onUpdateUser={handleUpdateUser} />} />
             <Route path="/search" element={<HonorificsSearch />} />
             <Route path="/guide" element={<HonorificsGuide />} />
