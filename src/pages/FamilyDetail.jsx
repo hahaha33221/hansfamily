@@ -133,12 +133,6 @@ export default function FamilyDetail({ currentUser, membersList: initialMembersL
       return;
     }
 
-    // Verify existing password matches
-    if (trimmedCurrent !== member.password) {
-      setPasswordError('기존 비밀번호가 일치하지 않습니다.');
-      return;
-    }
-
     if (trimmedNew === '1234') {
       setPasswordError('초기 비밀번호(1234) 이외의 비밀번호를 설정해주세요.');
       return;
@@ -157,6 +151,7 @@ export default function FamilyDetail({ currentUser, membersList: initialMembersL
         },
         body: JSON.stringify({
           password: trimmedNew,
+          currentPassword: trimmedCurrent,
         }),
       });
 
