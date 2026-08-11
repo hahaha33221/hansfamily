@@ -24,8 +24,10 @@ const INITIAL_CLASS = {
   spouse: styles.initialSpouse,
 };
 
-export default function OrgChart() {
-  const members = useMemo(() => getStoredMembers(), []);
+export default function OrgChart({ membersList }) {
+  const members = useMemo(() => {
+    return (membersList && membersList.length > 0) ? membersList : getStoredMembers();
+  }, [membersList]);
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
   const [compareId, setCompareId] = useState(null);

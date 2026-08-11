@@ -108,7 +108,7 @@ export default function App() {
             <Route path="/family/:id" element={<FamilyDetail currentUser={currentUser} membersList={members} onUpdateUser={handleUpdateUser} />} />
             <Route path="/search" element={<HonorificsSearch />} />
             <Route path="/guide" element={<HonorificsGuide />} />
-            <Route path="/orgchart" element={<OrgChart />} />
+            <Route path="/orgchart" element={<OrgChart membersList={members} />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<Home />} />
           </Routes>
