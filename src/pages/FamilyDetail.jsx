@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, User, Heart, Star, Sparkles, MessageCircle, Camera, Check, AlertCircle } from 'lucide-react';
+import { ArrowLeft, User, Heart, Star, Sparkles, MessageCircle, Camera, Check, AlertCircle, Lock, Key } from 'lucide-react';
 import { getHonorific } from '../utils/getHonorific';
 import { API_URL } from '../config';
 
@@ -12,6 +12,14 @@ export default function FamilyDetail({ currentUser, membersList: initialMembersL
   const [membersList, setMembersList] = useState(initialMembersList);
   const [meId, setMeId] = useState('');
   const [imageError, setImageError] = useState('');
+
+  // Password change states
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
 
   // Sync state with props
   useEffect(() => {
@@ -109,6 +117,74 @@ export default function FamilyDetail({ currentUser, membersList: initialMembersL
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    const trimmedCurrent = currentPassword.trim();
+    const trimmedNew = newPassword.trim();
+    const trimmedConfirm = confirmPassword.trim();
+
+    if (!trimmedCurrent || !trimmedNew || !trimmedConfirm) {
+      setPasswordError('모든 비밀번호 필드를 입력해주세요.');
+      return;
+    }
+
+    // Verify existing password matches
+    if (trimmedCurrent !== member.password) {
+      setPasswordError('기존 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    if (trimmedNew === '1234') {
+      setPasswordError('초기 비밀번호(1234) 이외의 비밀번호를 설정해주세요.');
+      return;
+    }
+
+    if (trimmedNew !== trimmedConfirm) {
+      setPasswordError('새 비밀번호와 확인용 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/members/${member.id}/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: trimmedNew,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPasswordSuccess('비밀번호가 성공적으로 변경되었습니다!');
+        
+        // Update local state and parent state
+        const updatedMember = { ...member, password: trimmedNew };
+        const updatedMembers = membersList.map((m) => m.id === member.id ? updatedMember : m);
+        setMembersList(updatedMembers);
+
+        if (onUpdateUser) {
+          onUpdateUser(updatedMember);
+        }
+
+        // Clear fields
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+      } else {
+        setPasswordError(data.message || '비밀번호 변경에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('Password change error:', err);
+      setPasswordError('서버와 통신할 수 없습니다.');
+    }
   };
 
   return (
@@ -262,6 +338,91 @@ export default function FamilyDetail({ currentUser, membersList: initialMembersL
             )}
           </div>
         </div>
+
+        {/* Password Change Section (Own Profile only) */}
+        {isOwnProfile && (
+          <div className="border-t border-border-beige/50 pt-8 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2 text-primary">
+                <Lock size={20} />
+                <h2 className="text-xl font-bold font-serif text-text-main">비밀번호 변경</h2>
+              </div>
+              <button
+                onClick={() => setShowPasswordForm(!showPasswordForm)}
+                className="text-xs bg-secondary hover:bg-secondary/80 text-text-main font-semibold px-3 py-1.5 rounded-xl transition-all duration-200"
+              >
+                {showPasswordForm ? '접기' : '비밀번호 변경 열기'}
+              </button>
+            </div>
+
+            {showPasswordForm && (
+              <form onSubmit={handlePasswordChange} className="bg-background/40 border border-border-beige/60 rounded-3xl p-6 space-y-4 max-w-md animate-fade-in">
+                <div className="space-y-3">
+                  {/* Current Password */}
+                  <div>
+                    <label className="block text-xs font-semibold text-text-sub uppercase mb-1">기존 비밀번호</label>
+                    <input
+                      type="password"
+                      placeholder="기존 비밀번호 입력"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      className="w-full bg-white border border-border-beige rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main"
+                      required
+                    />
+                  </div>
+
+                  {/* New Password */}
+                  <div>
+                    <label className="block text-xs font-semibold text-text-sub uppercase mb-1">새 비밀번호</label>
+                    <input
+                      type="password"
+                      placeholder="새 비밀번호 입력 (1234 제외)"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="w-full bg-white border border-border-beige rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main"
+                      required
+                    />
+                  </div>
+
+                  {/* Confirm New Password */}
+                  <div>
+                    <label className="block text-xs font-semibold text-text-sub uppercase mb-1">새 비밀번호 확인</label>
+                    <input
+                      type="password"
+                      placeholder="새 비밀번호 다시 입력"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full bg-white border border-border-beige rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 text-text-main"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {passwordError && (
+                  <div className="bg-red-50 border border-red-100 rounded-xl p-3 flex items-start space-x-2 text-red-600 text-xs font-semibold">
+                    <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
+                    <span>{passwordError}</span>
+                  </div>
+                )}
+
+                {passwordSuccess && (
+                  <div className="bg-green-50 border border-green-100 rounded-xl p-3 flex items-start space-x-2 text-green-600 text-xs font-semibold">
+                    <Check size={16} className="flex-shrink-0 mt-0.5 text-green-600" />
+                    <span>{passwordSuccess}</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full flex items-center justify-center space-x-2 bg-primary hover:bg-primary/95 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
+                >
+                  <Key size={16} />
+                  <span>비밀번호 업데이트</span>
+                </button>
+              </form>
+            )}
+          </div>
+        )}
 
         {/* Interactive "How to Call" Widget */}
         <div className="border-t border-border-beige/50 pt-8 space-y-6">
