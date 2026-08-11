@@ -268,7 +268,7 @@
     "id": "g7",
     "name": "한영수",
     "gender": "male",
-    "birthYear": 1967,
+    "birthYear": 1966,
     "category": "generation2",
     "spouseId": "g7-sp",
     "parentIds": [
@@ -289,7 +289,7 @@
     "id": "g7-sp",
     "name": "양순옥",
     "gender": "female",
-    "birthYear": 1967,
+    "birthYear": 1966,
     "category": "spouse",
     "spouseId": "g7",
     "parentIds": [],
