@@ -114,7 +114,7 @@
     "id": "g2-sp",
     "name": "정현숙",
     "gender": "female",
-    "birthYear": null,
+    "birthYear": 1956,
     "category": "spouse",
     "spouseId": "g2",
     "parentIds": [],
