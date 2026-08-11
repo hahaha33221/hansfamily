@@ -35,7 +35,7 @@ async function init() {
       childIds JSON,
       groupId VARCHAR(50),
       note TEXT,
-      profileImage VARCHAR(255),
+      profileImage LONGTEXT,
       username VARCHAR(100) UNIQUE,
       password VARCHAR(100)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
